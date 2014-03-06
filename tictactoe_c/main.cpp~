@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+using std::cout;
+using std::cin;
+using std::endl;
+
+const int FLDSIZE = 9;
+
+int whos_turn(const vector<int>  & field){
+	int x = std::count(field.begin(), field.end(), 'x');
+	int o = std::count(field.begin(), field.end(), 'o');
+	if (x < o){
+		return 1;
+	}else{
+		return -1;
+	}
+}
+
+int main(){
+	//read inp field
+	vector<char> field(FLDSIZE);
+	cin >> field;
+	//analyse field
+	//output move
+	
+	return 0;
+}
