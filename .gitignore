@@ -1,7 +1,10 @@
 *.py[cod]
+*.py~
 
 # C extensions
 *.so
+*.out
+*.cpp~
 
 # Packages
 *.egg
