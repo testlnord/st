@@ -61,7 +61,6 @@ pair<int, int> turn(const vector<char> & field, int turn){
 		if ((turn == X_MARK && potential[best] < potential[i])||
 			(turn == O_MARK && potential[best] > potential[i]))
 			best = i;
-	cout << field[best] << endl;
 	return std::make_pair(best/FLDSIZE, best%FLDSIZE);
 }
 
