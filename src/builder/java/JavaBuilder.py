@@ -1,21 +1,6 @@
-import os,sys
-# path = os.path.abspath("./")
-# path = os.path.abspath("./runner/java")
-path = os.path.abspath("../../runner/java")
-# print (path)
-sys.path.append(path)
-from JavaRunner import Runner
-
-
-
+import util.register
+import util.exceptions
 import subprocess
-
-class BuildFailedException(Exception):
-    def __init__(self, value):
-        self.value = value
-    def __str__(self):
-        return str(self.value)
-
 
 class JavaBuilder:
     EXIT_OK = 0        # Compilation completed with no errors.
@@ -25,7 +10,7 @@ class JavaBuilder:
     EXIT_ABNORMAL = 4  #Compiler terminated abnormally
 
 
-    def build(self, src,outPath):
+    def build(self, src, outPath):
 
         sep=src.rfind("/")+1
         fileName = src[sep:].replace(".java", "")
@@ -38,15 +23,17 @@ class JavaBuilder:
         proc.wait()
         if proc.returncode != 0:
             print("return code=",proc.returncode)
-            raise BuildFailedException(err.decode("UTF8"))
+            raise util.register.BuildFailedException(err.decode("UTF8"))
 
-        return Runner(outPath.__add__(fileName))
+        return util.register.runners["java"](outPath.__add__(fileName))
 
+
+util.register.builders["java"] = JavaBuilder()
 
 if __name__ == "__main__":
     a = JavaBuilder()
     try:
         executable = a.build("../../Main.java","../../bin/")
         print (executable)
-    except BuildFailedException as e:
+    except util.exceptions.BuildFailedException as e:
         print (e)

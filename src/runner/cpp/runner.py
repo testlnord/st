@@ -1,28 +1,7 @@
-import os,sys
-path = os.path.abspath("../../builder/cpp")
-print (path)
-sys.path.append(path)
-from builder import CppBuilder
-
 import subprocess
 import threading
-
-class UserProgramError(Exception):
-    pass
-
-class RunError(UserProgramError):
-    def __init__(self, val):
-        self.value = val
-
-    def __str__(self):
-        return str(self.value)
-
-class TimeOutError(UserProgramError):
-    def __init__(self, val):
-        self.value = val
-
-    def __str__(self):
-        return str(self.value)
+import util.register
+import util.exceptions
 
 
 class Runner:
@@ -49,12 +28,14 @@ class Runner:
         if thread.is_alive():
             self.proc.terminate()
             thread.join()
-            raise TimeOutError(self.timeout)
+
+            raise util.exceptions.TimeOutError(self.timeout)
         if res[1]:
-            raise RunError(res[1].decode("UTF8"))
+            raise util.exceptions.RunError(res[1].decode("UTF8"))
 
         return res[0].decode("UTF8")
 
+util.register.runners["cpp"] = Runner
 
 if __name__ == "__main__":
     b = CppBuilder()

@@ -1,13 +1,5 @@
-import sys, os
-path = os.path.abspath("../builder/cpp")
-print (path)
-sys.path.append(path)
-path = os.path.abspath("../runner/cpp")
-print (path)
-sys.path.append(path)
+import util.register
 
-from builder import CppBuilder, BuildFailedException
-from runner import Runner, UserProgramError
 
 class Checker:
     figs = {1:'x', 2:'o'}
@@ -68,6 +60,8 @@ class Checker:
             self.field[0::4] == 'ooo' or\
             self.field[2:7:2] == 'ooo':
             self._win = 2
+
+util.register.checkers["tictactoe"] = Checker
 
 if __name__ == "__main__":
     winner = 0
