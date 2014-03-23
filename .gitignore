@@ -1,6 +1,7 @@
 *.py[cod]
 *.py~
-
+#idea dirs
+.idea 
 # C extensions
 *.so
 *.out

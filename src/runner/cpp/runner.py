@@ -28,10 +28,8 @@ class Runner:
         if thread.is_alive():
             self.proc.terminate()
             thread.join()
-
             raise util.exceptions.TimeOutError(self.timeout)
-        if res[1]:
-            raise util.exceptions.RunError(res[1].decode("UTF8"))
+
 
         return res[0].decode("UTF8")
 

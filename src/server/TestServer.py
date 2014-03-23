@@ -22,7 +22,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 
 try:
-    serv = socketserver.TCPServer(("localhost",80), Handler )
+    serv = socketserver.TCPServer(("localhost",8080), Handler )
     serv.serve_forever()
 except KeyboardInterrupt:
     print('^C received, shutting down server')

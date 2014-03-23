@@ -16,3 +16,6 @@ print(util.register.runners)
 print(util.register.builders)
 print(util.register.checkers)
 
+#running server
+with open(config.server, "r") as fh:
+    exec(fh.read())

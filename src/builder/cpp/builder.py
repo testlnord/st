@@ -16,10 +16,10 @@ class CppBuilder:
         proc.wait()
         if proc.returncode != 0:
             raise util.exceptions.BuildFailedException(err.decode("UTF8"))
+        return util.register.runners["cpp"](out_path)
 
-        return out_path
 
-util.register.builders["cpp"] = CppBuilder()    
+util.register.builders["cpp"] = CppBuilder()
 
 if __name__ == "__main__":
     a = CppBuilder()
