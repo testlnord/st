@@ -1,4 +1,13 @@
 import sys, os
+
+#############################
+##     DataBase paths      ##
+#############################
+db_path = os.path.abspath("./db/")
+db_name = "Tournament.db"
+db_creation_script = "create.sql"
+
+
 #############################
 ##        Main paths       ##
 #############################
