@@ -1,9 +1,11 @@
 import sys, os
 
+
 #############################
 ##     DataBase paths      ##
 #############################
-db_path = os.path.abspath("./db/")
+
+db_path = os.path.abspath("./database/")
 db_name = "Tournament.db"
 db_creation_script = "create.sql"
 
@@ -19,12 +21,13 @@ java_runner_path = os.path.abspath("./runner/java")
 
 checker_path = os.path.abspath("./checker")
 
+
+
 server = os.path.abspath("./server/testServer.py")
 sender = os.path.abspath("./server/sender.py")
 serverHost = "localhost"
 serverPort = 8080
 
-db_path = os.path.abspath("./database")
 
 #addind main paths to sys.path
 sys.path.append(cpp_builder_path)
