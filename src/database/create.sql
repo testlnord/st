@@ -1,12 +1,12 @@
 pragma foreign_keys = on;
 
-CREATE TABLE user
+CREATE TABLE IF NOT EXISTS user
 (
   name varchar(100),
   email varchar(100),
   id INTEGER PRIMARY KEY 
 );
-CREATE TABLE tournament
+CREATE TABLE IF NOT EXISTS tournament
 (
   name varchar(100),
   checker varchar(100),
@@ -16,7 +16,7 @@ CREATE TABLE tournament
   end_time DATETIME
 );
 
-CREATE TABLE participants
+CREATE TABLE IF NOT EXISTS participants
 (
   user_id INTEGER,
   tour_id INTEGER,
@@ -25,7 +25,7 @@ CREATE TABLE participants
   PRIMARY KEY (user_id, tour_id)
 );
 
-CREATE TABLE solution
+CREATE TABLE IF NOT EXISTS solution
 (
   user_id INTEGER,
   tour_id INTEGER,
@@ -34,14 +34,14 @@ CREATE TABLE solution
   time DATETIME,
   FOREIGN KEY (user_id, tour_id) REFERENCES participants(uid, tid)
 );
-CREATE TABLE run
+CREATE TABLE IF NOT EXISTS run
 (
   id INTEGER PRIMARY KEY ,
   tour_id INTEGER,
   timestart DATETIME,
   FOREIGN KEY (tour_id) REFERENCES tournament(id)
 );
-CREATE TABLE game
+CREATE TABLE IF NOT EXISTS game
 (
   id INTEGER PRIMARY KEY ,
   solution1 INTEGER,

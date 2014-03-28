@@ -16,9 +16,6 @@ print(util.register.runners)
 print(util.register.builders)
 print(util.register.checkers)
 
-#running server
-import database.db as db
-database = db.DB()
 
-with open(config.server, "r") as fh:
-    exec(fh.read())
+with server.Server() as s:
+    s.run(config.serverHost,config.serverPort)
