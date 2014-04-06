@@ -35,6 +35,7 @@ sys.path.append(checker_path)
 sys.path.append(server_path)
 sys.path.append(db_path)
 
+out_path = os.path.abspath("../out/")
 
 #############################
 #    Stuff for start.py     #
