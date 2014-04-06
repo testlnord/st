@@ -1,4 +1,4 @@
-from unittest.test.test_result import __init__
+#from unittest.test.test_result import __init__
 
 __author__ = 's'
 
@@ -7,12 +7,12 @@ import urllib.request
 import json
 
 class Sender:
-    def  __init__(self,host,port):
+    def  __init__(self, host, port):
         self.host = host
         self.port = port
 
 
-    def sendUserInfo (self,name,email):
+    def sendUserInfo (self, name, email):
         dict = {
             "name" : name,
             "email" :email
@@ -26,7 +26,7 @@ class Sender:
 
 
 
-    def sendCreateTournament (self,name,checker,timelimit,start_time,end_time):
+    def sendCreateTournament (self, name, checker, timelimit, start_time, end_time):
         dict = {
             "name" : name,
             "checker" : str(checker),

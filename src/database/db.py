@@ -16,6 +16,77 @@ class DB:
             print (tab)
         print("Database started")
 
+    def addUser(self, name, email):
+        cur = self.conn.cursor()
+        cur.execute("INSERT INTO user (name, email) VALUES (?, ?);", (name, email))
+        self.conn.commit()
+
+    def getUser(self, id = None, name = None):
+        cur = self.conn.cursor()
+        query  = "SELECT name, email, id FROM user "
+        if (not id is None):
+            res = cur.execute(query + "where id = ?", (id,))
+        elif (not name is None):
+            res = cur.execute(query + "where name = ?", (name,))
+        else:
+            res = cur.execute(query)
+        result = []
+        for (user_name, user_mail, user_id) in res:
+            result.append({"name":user_name, "email": user_mail, "id": user_id})
+
+        return result
+
+    def addTournament(self, name, checker, timelimit, start_time, end_time):
+        cur = self.conn.cursor()
+        cur.execute("INSERT INTO tournament(name, checker, timelimit, start_time, end_time) values (?, ?, ?, ?, ?)",
+            (name, checker, timelimit, start_time, end_time))
+        self.conn.commit()
+
+    def getTournament(self, id = None, name = None):
+        cur = self.conn.cursor()
+        query  = "SELECT name, checker, timelimit, start_time, end_time, id FROM tournament "
+        if (not id is None):
+            res = cur.execute(query + "where id = ?", (id,))
+        elif (not name is None):
+            res = cur.execute(query + "where name = ?", (name,))
+        else:
+            res = cur.execute(query)
+        result = []
+        for (t_name, t_checker, t_timelimit, t_s_time, t_e_time, t_id) in res:
+            result.append({"name": t_name,
+                           "checker": t_checker,
+                           "timelimit": t_timelimit,
+                           "start_time": t_s_time,
+                           "end_time": t_e_time,
+                           "id" : t_id})
+        return result
+
+    def addParticipant(self, tour_id, user_id):
+        cur = self.conn.cursor()
+        cur.execute("INSERT INTO participants(user_id, tour_id) values (?, ?)", (user_id, tour_id))
+        self.conn.commit()
+
+    def getParticipantsInTournament(self, tour_id):
+        cur = self.conn.cursor()
+        res = cur.execute("SELECT name, email, id from user INNER JOIN participants on user_id = id where tour_id = ?",
+                    (tour_id,))
+        result = []
+        for (user_name, user_mail, user_id) in res:
+            result.append({"name":user_name, "email": user_mail, "id": user_id})
+
+        return result
+
+    def addSolution(self, user_id, tour_id, build_status, time):
+        cur = self.conn.cursor()
+        cur.execute("INSERT INTO participants(user_id, tour_id, build_status, time) values (?, ?, ?, ?)",
+                    (user_id, tour_id, build_status, time))
+        self.conn.commit()
+
+    def getSolutionsInTournament(self, tour_id):
+        cur = self.conn.cursor()
+        self.conn.commit()
+
+
 def addUser(data):
     name = data["name"]
     email= data["email"]
@@ -50,16 +121,18 @@ def createTournament(data):
             print(name+" is already there")
             return 1
 
-def setUserToTournament ():
+def setUserToTournament (data):
+    user_name = data["user"]
+    tour_name = data["tour"]
+
+
+def setSolution(self, data):
     pass
 
-def setSolution():
+def createRun(self, data):
     pass
 
-def createRun():
-    pass
-
-def createGame():
+def createGame(self, data):
     pass
 
 
