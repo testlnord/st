@@ -1,7 +1,7 @@
 *.py[cod]
 *.py~
 #idea dirs
-.idea/ 
+.idea/
 src/.idea/
 #data bases
 *.db
