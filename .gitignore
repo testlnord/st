@@ -2,6 +2,7 @@
 *.py~
 #idea dirs
 .idea/ 
+src/.idea/
 #data bases
 *.db
 # C extensions
