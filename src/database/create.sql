@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS user
 (
   name varchar(100),
   email varchar(100),
-  id INTEGER PRIMARY KEY 
+  id INTEGER PRIMARY KEY,
+  UNIQUE (name)
 );
 CREATE TABLE IF NOT EXISTS tournament
 (
@@ -13,7 +14,8 @@ CREATE TABLE IF NOT EXISTS tournament
   id INTEGER PRIMARY KEY ,
   timelimit REAL,
   start_time DATETIME,
-  end_time DATETIME
+  end_time DATETIME,
+  UNIQUE (name)
 );
 
 CREATE TABLE IF NOT EXISTS participants
@@ -32,7 +34,7 @@ CREATE TABLE IF NOT EXISTS solution
   id INTEGER PRIMARY KEY ,
   build_status INTEGER,
   time DATETIME,
-  FOREIGN KEY (user_id, tour_id) REFERENCES participants(uid, tid)
+  FOREIGN KEY (user_id, tour_id) REFERENCES participants(user_id, tour_id)
 );
 CREATE TABLE IF NOT EXISTS run
 (
