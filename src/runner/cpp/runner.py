@@ -34,8 +34,3 @@ class Runner:
         return res[0].decode("UTF8")
 
 util.register.runners["cpp"] = Runner
-
-if __name__ == "__main__":
-    b = CppBuilder()
-    r = Runner(b.build("../../../test/tictactoe/cpp/main.cpp"), 1)
-    print (r.step('---o-----'))

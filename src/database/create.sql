@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS solution
   tour_id INTEGER,
   id INTEGER PRIMARY KEY ,
   build_status INTEGER,
+  runner_name VARCHAR(100),
+  out_name VARCHAR(50),
   time DATETIME,
   FOREIGN KEY (user_id, tour_id) REFERENCES participants(user_id, tour_id)
 );

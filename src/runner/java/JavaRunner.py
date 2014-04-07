@@ -1,3 +1,5 @@
+import os
+
 __author__ = 'stanis'
 
 import subprocess
@@ -9,9 +11,7 @@ import util.exceptions
 
 class JavaRunner:
     def __init__ (self, src):
-        sep=src.rfind("/")+1
-        fileName = src[sep:]
-        path=src[:sep]
+        path, fileName = os.path.split(src)
         self.proc = subprocess.Popen(["java -cp %s %s"%(path,fileName)], shell= True, stderr=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stdin=subprocess.PIPE)

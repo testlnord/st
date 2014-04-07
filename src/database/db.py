@@ -13,7 +13,6 @@ class DB:
         self.conn = lite.connect(os.path.join(config.db_path, config.db_name))
         print("Database started")
 
-
     def self_test(self):
         print("self_test")
         print("add_uiser")
@@ -29,7 +28,7 @@ class DB:
         print("get part")
         print(self.getParticipantsInTournament(1))
         print("add sol")
-        self.addSolution(1,1,0,"21321")
+        self.addSolution(1,1,0,"21321", "cpp", "a.out")
         print("get sol")
         self.getSolutionsInTournament(1)
 
@@ -85,6 +84,7 @@ class DB:
         cur.execute("INSERT INTO participants(user_id, tour_id) values (?, ?)", (user_id, tour_id))
         self.conn.commit()
         return cur.lastrowid
+
     def addParticipantByNames(self, tour_name, user_name):
         user = self.getUser(name= user_name)
         tour = self.getTournament(name= tour_name)
@@ -101,24 +101,28 @@ class DB:
 
         return result
 
-    def addSolution(self, user_id, tour_id, build_status, time):
+    def addSolution(self, user_id, tour_id, build_status, time, runner, file_name):
         cur = self.conn.cursor()
-        cur.execute("INSERT INTO solution(user_id, tour_id, build_status, time) values (?, ?, ?, ?)",
-                    (user_id, tour_id, build_status, time))
+        cur.execute("INSERT INTO solution(user_id, tour_id, build_status, time, runner_name, out_name) "+
+                    "values (?, ?, ?, ?, ?, ?)",
+                    (user_id, tour_id, build_status, time, runner, file_name))
         self.conn.commit()
         return cur.lastrowid
 
     def getSolutionsInTournament(self, tour_id):
         cur = self.conn.cursor()
-        res = cur.execute("SELECT user_id, tour_id, build_status, max(time), id from solution "+
-                          "where tour_id = ? group by tour_id, user_id, id, build_status", (tour_id,))
+        res = cur.execute("SELECT user_id, tour_id, build_status, max(time), id, runner_name, out_name from solution "+
+                          "where tour_id = ? group by tour_id, user_id, id, build_status, runner_name, out_name",
+                          (tour_id,))
         result = []
-        for (user_id, t_id, b_status, time, id) in res:
+        for (user_id, t_id, b_status, time, id, runner, file_name) in res:
             result.append({"user_id":user_id,
                            "tour_id": t_id,
                            "build_status": b_status,
                            "time": time,
-                           "id": id})
+                           "id": id,
+                           "runner_name": runner,
+                           "file_name": file_name})
         return result
 
     def addRun(self, tour_id, timestart):
@@ -134,53 +138,5 @@ class DB:
             (sol_id1, sol_id2, pts1, pts2, run_id, log))
         self.conn.commit()
         return cur.lastrowid
-
-
-def addUser(db,data,path):
-    name = data["name"]
-    email= data["email"]
-    db.addUser(name.email)
-
-def getUserInfo(db,path):
-    dict=parsePath(path)
-
-    if "id" in dict:
-        data=db.getUser(dict["id"])
-    else:
-        data=db.getUser(dict["name"])
-
-    jsonData = json.dumps(data)
-    return jsonData.encode("utf-8")
-
-
-
-
-def addTournament(db,data,path):
-    name = data["name"]
-    checker= data["checker"]
-    timelimit = data["timelimit"]
-    start_time = data ["start_time"]
-    end_time  = data ["end_time"]
-    db.addTournament(name,checker,timelimit,start_time,end_time)
-
-
-def parsePath(path):
-    s=path.split("?")[1]
-    chunks=s.split(",")
-    dict={}
-    for chunk in chunks:
-        key,value= chunk.split("=")
-        dict[key]=value
-    return dict
-
-#madnes!!!
-def wrapByComma (string):
-    return "'"+string+"'"
-
-def packArgs (args):
-    s=""
-    for arg in args:
-        s+=","+str(arg)
-
 
 

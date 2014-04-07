@@ -1,4 +1,7 @@
-from unittest.test import support
+#from unittest.test import support
+import datetime
+import os
+
 
 __author__ = 'stanis'
 
@@ -10,16 +13,14 @@ import json
 import db
 
 
-def supprort(method,key):
-    def adder(handler):
-        handler.supportedHandlers[key]=method
-        return handler
-    return adder
+from support import *
 
 
 @supprort(db.addUser, "/add_user")
 @supprort(db.addTournament,"/create_tournament")
-@supprort (db.getUserInfo,"/get_user_info")
+@supprort(db.getUserInfo,"/get_user_info")
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     supportedHandlers = {}
 
@@ -40,7 +41,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.close()
 
 
-
+    def run(self, tour_id):
+        run_id = self.db.addRun(tour_id, str(datetime.datetime.now()))
+        solutions = self.db.getSolutionsInTournament(tour_id)
+        tour_info = self.db.getTournament(id = tour_id)[0]
+        for sol1 in solutions[:-1]:
+            for sol2 in solutions[1:]:
+                pass
 
 
     def do_POST(self):
