@@ -1,3 +1,5 @@
+from unittest.test import support
+
 __author__ = 'stanis'
 
 import http.server
@@ -16,24 +18,25 @@ def supprort(method,key):
 
 
 @supprort(db.addUser, "/add_user")
-@supprort(db.createTournament,"/create_tournament")
+@supprort(db.addTournament,"/create_tournament")
+@supprort (db.getUserInfo,"/get_user_info")
 class Handler(http.server.BaseHTTPRequestHandler):
     supportedHandlers = {}
 
+    def __init__(self):
+        self.db =db.DB()
+        super(http.server.BaseHTTPRequestHandler, self ).__init__()
+
+    def getKeyFromAddres(self,str):
+        return str.split('?')[0]
+
     def do_GET(self):
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_header("Content-type", "application/json")
         self.end_headers()
 
-        s="<html><head><title>That is surreal tournament.</title></head>"
-        self.wfile.write(s.encode("utf-8"))
-        s="<body><p>U can create user by sending POST with json to /add_user </p>"
-        self.wfile.write(s.encode("utf-8"))
-        # If someone went to "http://something.somewhere.net/foo/bar/",
-        # then s.path equals "/foo/bar/".
-        s="<p>You accessed path: %s</p>" % self.path
-        self.wfile.write(s.encode("utf-8"))
-        self.wfile.write(bytes(("</body></html>"), "utf-8"))
+        key = self.getKeyFromAddres(self.path)
+        self.wfile.write(self.supportedHandlers[key](self.db,self.path))
         self.wfile.close()
 
 
@@ -52,8 +55,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         jsonData=next(iter(post_data.keys()))
         jsonData = json.loads(jsonData)
 
-        key = self.path
-        self.supportedHandlers[key](jsonData)
+        key = self.getKeyFromAddres(self.path)
+        self.supportedHandlers[key](self.db,jsonData,self.path)
 
 
 class Server:
