@@ -1,6 +1,7 @@
 #from unittest.test import support
-import datetime
+
 import os
+import socket
 
 
 __author__ = 'stanis'
@@ -16,17 +17,17 @@ import db
 from support import *
 
 
-@supprort(addUser, "/add_user")
-@supprort(addTournament,"/create_tournament")
-@supprort(getUserInfo,"/get_user_info")
-
-
+@support(addUser, "/add_user")
+@support(addTournament,"/create_tournament")
+@support(getUserInfo,"/get_user_info")
+@support (add_solution,"/send_solution")
+@support (add_participant,"/add_participant")
 class Handler(http.server.BaseHTTPRequestHandler):
     supportedHandlers = {}
 
-    def __init__(self):
+    def __init__(self,*args,**kargs):
         self.db =db.DB()
-        super(http.server.BaseHTTPRequestHandler, self ).__init__()
+        super(http.server.BaseHTTPRequestHandler, self ).__init__(*args,**kargs)
 
     def getKeyFromAddres(self,str):
         return str.split('?')[0]
@@ -38,22 +39,19 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         key = self.getKeyFromAddres(self.path)
         self.wfile.write(self.supportedHandlers[key](self.db,self.path))
-        self.wfile.close()
+        # self.wfile.close()
 
     def do_POST(self):
         self.send_response(200)
         self.send_header('content-type','text/html')
         self.end_headers()
 
-        length = int(self.headers['Content-Length'])
-        post_data = urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8'),keep_blank_values=1)
-
-
-        jsonData = next(iter(post_data.keys()))
-        jsonData = json.loads(jsonData)
-
         key = self.getKeyFromAddres(self.path)
-        self.supportedHandlers[key](self.db,jsonData,self.path)
+        # print(self.rfile.read().decode('utf-8'))
+        self.supportedHandlers[key](self.db,self.rfile,self.path)
+
+
+
 
 
 class Server:
