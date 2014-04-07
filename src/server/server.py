@@ -22,6 +22,8 @@ from support import *
 @support(getUserInfo,"/get_user_info")
 @support (add_solution,"/send_solution")
 @support (add_participant,"/add_participant")
+@support (run_tournament,"/run_tournament")
+@support (get_run_result,"/get_run_result")
 class Handler(http.server.BaseHTTPRequestHandler):
     supportedHandlers = {}
 
@@ -38,8 +40,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
 
         key = self.getKeyFromAddres(self.path)
-        self.wfile.write(self.supportedHandlers[key](self.db,self.path))
-        # self.wfile.close()
+        data=self.supportedHandlers[key](self.db,self.path)
+        if data != None:
+            self.wfile.write(data)
+
 
     def do_POST(self):
         self.send_response(200)

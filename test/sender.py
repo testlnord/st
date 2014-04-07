@@ -43,6 +43,16 @@ class Sender:
     def getUserInfoByName (self,name):
         url = 'http://'+str(self.host)+':'+str(self.port)+"/get_user_info?name="+name
         response = urllib.request.urlopen(url)
+        return
+
+    def get_run_result (self,run_name):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_run_result?runid=5"
+        response = urllib.request.urlopen(url)
+        return response
+
+    def run_tournament (self,t_name):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/run_tournament?tournament_name="+t_name
+        response = urllib.request.urlopen(url)
         return response
 
     def dict (self,response):
@@ -63,6 +73,8 @@ class Sender:
         response = urllib.request.urlopen(req)
 
 
+
+
     def send_solution (self,user_name,tournament_name,type,file_path):
         args="name="+user_name
         args+=","
@@ -81,15 +93,16 @@ class Sender:
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    # s.sendUserInfo("Kolyan","kolyan@ya.ru")
-    s.sendCreateTournament("test2","tictactoe.Checker",10,123123,123124123)
-    # s.add_user_to_tour("Kolyan","test2")
-
-
-
-    # s.send_solution("Kolyan","test","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
+    # s.sendUserInfo("Kolyan2","kolyan@ya.ru")
+    # s.sendCreateTournament("test5","tictactoe",10,123123,123124123)
+    # s.add_user_to_tour("Kolyan2","test5")
+    # s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
     # response = s.getUserInfoByName('Barybasyan')
     # print(s.dict(response))
+
+    # s.run_tournament("test5")
+    response = s.get_run_result("blabl")
+    print(s.dict(response))
 
 
 
