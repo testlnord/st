@@ -85,6 +85,11 @@ class DB:
         cur.execute("INSERT INTO participants(user_id, tour_id) values (?, ?)", (user_id, tour_id))
         self.conn.commit()
         return cur.lastrowid
+    def addParticipantByNames(self, tour_name, user_name):
+        user = self.getUser(name= user_name)
+        tour = self.getTournament(name= tour_name)
+        return self.addParticipant(tour[0]["id"], user[0]["id"])
+
 
     def getParticipantsInTournament(self, tour_id):
         cur = self.conn.cursor()
