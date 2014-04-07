@@ -136,63 +136,42 @@ class DB:
         return cur.lastrowid
 
 
-def addUser(data):
+def addUser(db,data,path):
     name = data["name"]
     email= data["email"]
-    con = lite.connect(os.path.join(config.db_path, config.db_name))
-    with con:
-        cur = con.cursor()
-        try:
-            cur = con.cursor()
-            values = wrapByComma(name)+","+wrapByComma(email)
-            cur.execute("INSERT INTO user(name , email) VALUES ("+values+");")
-            return 0
-        except lite.IntegrityError:
-            print(name+" is already there")
-            return 1
+    db.addUser(name.email)
 
-def createTournament(data):
+def getUserInfo(db,path):
+    dict=parsePath(path)
+
+    if "id" in dict:
+        data=db.getUser(dict["id"])
+    else:
+        data=db.getUser(dict["name"])
+
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
+
+
+
+def addTournament(db,data,path):
     name = data["name"]
     checker= data["checker"]
     timelimit = data["timelimit"]
     start_time = data ["start_time"]
     end_time  = data ["end_time"]
-
-    con = lite.connect(os.path.join(config.db_path, config.db_name))
-    with con:
-        cur = con.cursor()
-        try:
-            cur = con.cursor()
-            values =packArgs([wrapByComma(name),wrapByComma(checker),timelimit,start_time,end_time])
-            cur.execute("INSERT INTO tournament(name , checker , timelimit , start_time, end_time) VALUES (' "+values+" ');")
-            return 0
-        except lite.IntegrityError:
-            print(name+" is already there")
-            return 1
-
-def setUserToTournament (data):
-    user_name = data["user"]
-    tour_name = data["tour"]
+    db.addTournament(name,checker,timelimit,start_time,end_time)
 
 
-def setSolution(self, data):
-    pass
-
-def createRun(self, data):
-    pass
-
-def createGame(self, data):
-    pass
-
-
-def printTable():
-    con = lite.connect(os.path.join(config.db_path, config.db_name))
-    with con:
-        cur = con.cursor()
-        cur.execute("SELECT Id,Name FROM user;")
-        print("Id \t Name")
-        for row in cur:
-            print(row[0],"\t",row[1])
+def parsePath(path):
+    s=path.split("?")[1]
+    chunks=s.split(",")
+    dict={}
+    for chunk in chunks:
+        key,value= chunk.split("=")
+        dict[key]=value
+    return dict
 
 #madnes!!!
 def wrapByComma (string):
