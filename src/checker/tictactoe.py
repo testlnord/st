@@ -9,13 +9,28 @@ class Checker:
         self.field = "---------"
         self.turn = 1
         self._win = 0
+        self._pts1 = 0
+        self._pts2 = 0
+
 
     def play(self):
         while True:
             self._step()
             if self._win != 0:
+                if self._win == 1:
+                    self._pts1 = 1
+                elif self._win == 2:
+                    self._pts2 = 1
                 break
         return self._win
+
+
+    def log(self):
+        return "Not implemented yet"
+
+
+    def points(self):
+        return self._pts1, self._pts2
 
     def _step(self):
         res = ''

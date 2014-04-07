@@ -16,9 +16,9 @@ import db
 from support import *
 
 
-@supprort(db.addUser, "/add_user")
-@supprort(db.addTournament,"/create_tournament")
-@supprort(db.getUserInfo,"/get_user_info")
+@supprort(addUser, "/add_user")
+@supprort(addTournament,"/create_tournament")
+@supprort(getUserInfo,"/get_user_info")
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -39,16 +39,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
         key = self.getKeyFromAddres(self.path)
         self.wfile.write(self.supportedHandlers[key](self.db,self.path))
         self.wfile.close()
-
-
-    def run(self, tour_id):
-        run_id = self.db.addRun(tour_id, str(datetime.datetime.now()))
-        solutions = self.db.getSolutionsInTournament(tour_id)
-        tour_info = self.db.getTournament(id = tour_id)[0]
-        for sol1 in solutions[:-1]:
-            for sol2 in solutions[1:]:
-                pass
-
 
     def do_POST(self):
         self.send_response(200)
