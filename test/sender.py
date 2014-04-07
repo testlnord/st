@@ -40,10 +40,56 @@ class Sender:
         req = urllib.request.Request(url,post_data)
         response = urllib.request.urlopen(req)
 
+    def getUserInfoByName (self,name):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_user_info?name="+name
+        response = urllib.request.urlopen(url)
+        return response
+
+    def dict (self,response):
+        json_data= response.read().decode('utf-8')
+        json_data=json.loads(json_data)
+        json_data=json_data[0]
+        return json_data
+
+    def add_user_to_tour (self,name,t_name):
+        dict = {
+            "name" : name,
+            "tournament_name" : t_name
+            }
+        jsonData = json.dumps(dict)
+        post_data = jsonData.encode("utf-8")
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/add_participant"
+        req = urllib.request.Request(url,post_data)
+        response = urllib.request.urlopen(req)
+
+
+    def send_solution (self,user_name,tournament_name,type,file_path):
+        args="name="+user_name
+        args+=","
+        args+="tournament_name="+tournament_name
+        args+=","
+        args+="type="+type
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/send_solution?"+args
+        f = open(file_path, 'r')
+        post_data = f.read().encode('utf-8')
+        req=urllib.request.Request(url,post_data)
+        response = urllib.request.urlopen(req)
+
+
+
+
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    s.sendUserInfo('Vasya',"vasia@gmail.com")
+    # s.sendUserInfo("Kolyan","kolyan@ya.ru")
+    s.sendCreateTournament("test2","tictactoe.Checker",10,123123,123124123)
+    # s.add_user_to_tour("Kolyan","test2")
+
+
+
+    # s.send_solution("Kolyan","test","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
+    # response = s.getUserInfoByName('Barybasyan')
+    # print(s.dict(response))
 
 
 
