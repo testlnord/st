@@ -1,8 +1,9 @@
 #server decorator
+import json
 import os
-import db
+import database.db
 import util.register
-import util.exception
+import util.exceptions
 import config
 import datetime
 
@@ -69,12 +70,12 @@ def run(db, tour_name):
         for sol1_num, sol1 in enumerate(solutions[:-1]):
             for sol2 in solutions[sol1_num + 1:]:
                 r1 = util.register.runners[sol1["runner_name"]](
-                    os.path.join(make_out_path(sol1["tour_id"], sol1["user_id"]), sol1["out_name"]),
-                    tour_info["timeout"]
+                    os.path.join(make_out_path(sol1["tour_id"], sol1["user_id"]), sol1["file_name"]),
+                    tour_info["timelimit"]
                 )
                 r2 = util.register.runners[sol2["runner_name"]](
-                    os.path.join(make_out_path(sol2["tour_id"], sol2["user_id"]), sol2["out_name"]),
-                    tour_info["timeout"]
+                    os.path.join(make_out_path(sol2["tour_id"], sol2["user_id"]), sol2["file_name"]),
+                    tour_info["timelimit"]
                 )
                 #first time
                 checker = util.register.checkers[tour_info["checker"]](r1, r2)
@@ -119,6 +120,5 @@ def packArgs (args):
     s=""
     for arg in args:
         s+=","+str(arg)
-
 
 
