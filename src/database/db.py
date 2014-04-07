@@ -113,7 +113,8 @@ class DB:
     def getSolutionsInTournament(self, tour_id):
         cur = self.conn.cursor()
         res = cur.execute("SELECT user_id, tour_id, build_status, max(time), id, runner_name, out_name from solution " +
-                          "where tour_id = ? group by tour_id, user_id, id, build_status, runner_name, out_name",
+                          "where tour_id = ? and build_status = 0 " +
+                          "group by tour_id, user_id, id, build_status, runner_name, out_name",
                           (tour_id,))
         result = []
         for (user_id, t_id, b_status, time, id, runner, file_name) in res:

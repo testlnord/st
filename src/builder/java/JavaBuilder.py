@@ -9,7 +9,8 @@ class JavaBuilder:
     EXIT_SYSERR = 3,   # System error or resource exhaustion.
     EXIT_ABNORMAL = 4  #Compiler terminated abnormally
 
-
+    def_src_name = "Main.java"
+    def_out_name = "Main"
     def build(self, src, outPath):
 
         sep=src.rfind("/")+1
@@ -25,7 +26,7 @@ class JavaBuilder:
             print("return code=",proc.returncode)
             raise util.register.BuildFailedException(err.decode("UTF8"))
 
-        return util.register.runners["java"](outPath.__add__(fileName))
+        return fileName
 
 
 util.register.builders["java"] = JavaBuilder()

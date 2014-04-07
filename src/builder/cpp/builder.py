@@ -1,13 +1,14 @@
+import os
 import util.register
 import util.exceptions
 import subprocess
 
 
 class CppBuilder:
-    path_to_output = "../../../out/"
-
+    def_out_name = "a.out"
+    def_src_name = "main.cpp"
     def build(self, src, dst):
-        out_path = dst + "a.out"
+        out_path = os.path.join(dst, self.def_out_name)
         proc = subprocess.Popen(["g++ %s -o %s"%(src, out_path)],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
@@ -16,7 +17,7 @@ class CppBuilder:
         proc.wait()
         if proc.returncode != 0:
             raise util.exceptions.BuildFailedException(err.decode("UTF8"))
-        return util.register.runners["cpp"](out_path)
+        return self.def_out_name
 
 
 util.register.builders["cpp"] = CppBuilder()

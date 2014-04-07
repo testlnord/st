@@ -49,7 +49,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         post_data = urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8'),keep_blank_values=1)
 
 
-        jsonData=next(iter(post_data.keys()))
+        jsonData = next(iter(post_data.keys()))
         jsonData = json.loads(jsonData)
 
         key = self.getKeyFromAddres(self.path)
