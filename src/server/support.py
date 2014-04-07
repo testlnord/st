@@ -64,8 +64,10 @@ def parsePath(path):
 def run(db, tour_name):
         tour_info = db.getTournament(name=tour_name)[0]
         tour_id = tour_info["id"]
+
         run_id = db.addRun(tour_id, str(datetime.datetime.now()))
         solutions = db.getSolutionsInTournament(tour_id)
+
 
         for sol1_num, sol1 in enumerate(solutions[:-1]):
             for sol2 in solutions[sol1_num + 1:]:
