@@ -62,6 +62,17 @@ def add_solution (db,data,path):
     type=dict["type"]
     addBuild(db,name,t_name,data,type)
 
+def run_tournament (db,path):
+    dict=parsePath(path)
+    run(db,dict["tournament_name"])
+    return None
+
+def get_run_result (db,path):
+    dict=parsePath(path)
+    data=db.getRunResult(dict["runid"])
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
 
 
 def run(db, tour_name):
@@ -75,12 +86,12 @@ def run(db, tour_name):
         for sol1_num, sol1 in enumerate(solutions[:-1]):
             for sol2 in solutions[sol1_num + 1:]:
                 r1 = util.register.runners[sol1["runner_name"]](
-                    os.path.join(make_out_path(sol1["tour_id"], sol1["user_id"]), sol1["out_name"]),
-                    tour_info["timeout"]
+                    os.path.join(make_out_path(sol1["tour_id"], sol1["user_id"]), sol1["file_name"]),
+                    tour_info["timelimit"]
                 )
                 r2 = util.register.runners[sol2["runner_name"]](
-                    os.path.join(make_out_path(sol2["tour_id"], sol2["user_id"]), sol2["out_name"]),
-                    tour_info["timeout"]
+                    os.path.join(make_out_path(sol2["tour_id"], sol2["user_id"]), sol2["file_name"]),
+                    tour_info["timelimit"]
                 )
                 #first time
                 checker = util.register.checkers[tour_info["checker"]](r1, r2)
@@ -94,12 +105,12 @@ def run(db, tour_name):
                 db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
 
 
-def addBuild(db, user_name, tour_name, file, builder):
+def addBuild(db, user_name, tour_name, file, builder_name):
     user_info = db.getUser(name=user_name)[0]
     tour_info = db.getTournament(name=tour_name)[0]
     o_path = make_out_path(tour_info["id"], user_info["id"])
     os.makedirs(o_path)
-    builder = util.register.builders[builder]
+    builder = util.register.builders[builder_name]
     src_path = os.path.join(o_path, builder.def_src_name)
     with open(src_path, "w") as src_file:
         b = file.read(1).decode('utf-8')
@@ -112,7 +123,9 @@ def addBuild(db, user_name, tour_name, file, builder):
         o_file = builder.build(src_path, o_path)
     except util.exceptions.BuildFailedException:
         b_stat = 1
-    db.addSolution(user_info["id"], tour_info["id"], b_stat, str(datetime.datetime.now()), builder, o_file)
+
+    print(builder)
+    db.addSolution(user_info["id"], tour_info["id"], b_stat, str(datetime.datetime.now()), builder_name, o_file)
 
 def parsePath(path):
     s=path.split("?")[1]
