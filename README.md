@@ -6,8 +6,12 @@ Surreal Tournament
 для работы требуется пакет django-registration
 
 установить можно через::
-		   pip install django-registration
-
+```
+pip install django-registration
+```
+'''
+asdf
+'''
 
 ##Просьба, поддерживать структуру каталогов.
 - test -- тесты
