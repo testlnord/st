@@ -3,6 +3,12 @@ st
 
 Surreal Tournament 
 
+для работы требуется пакет django-registration
+
+установить можно через::
+		   pip install django-registration
+
+
 ##Просьба, поддерживать структуру каталогов.
 - test -- тесты
 - test/tictactoe/ 
