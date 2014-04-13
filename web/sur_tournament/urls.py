@@ -6,5 +6,4 @@ from sur_tournament.views import main
 
 urlpatterns = patterns('',
     url(r'^$', main),
-
 )

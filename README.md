@@ -9,9 +9,6 @@ Surreal Tournament
 ```
 pip install django-registration
 ```
-'''
-asdf
-'''
 
 ##Просьба, поддерживать структуру каталогов.
 - test -- тесты

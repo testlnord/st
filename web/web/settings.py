@@ -35,6 +35,8 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+   # 'django.contrib.sites',
+    'registration',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -42,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'sur_tournament',
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,6 +54,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+#Registration stuff
+ACCOUNT_ACTIVATION_DAYS = 2
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 ROOT_URLCONF = 'web.urls'
 
