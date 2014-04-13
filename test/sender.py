@@ -93,7 +93,7 @@ class Sender:
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    # s.sendUserInfo("Kolyan2","kolyan@ya.ru")
+    s.sendUserInfo("Kolyan2","kolyan@ya.ru")
     # s.sendCreateTournament("test5","tictactoe",10,123123,123124123)
     # s.add_user_to_tour("Kolyan2","test5")
     # s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
