@@ -43,9 +43,9 @@ class Sender:
     def getUserInfoByName (self,name):
         url = 'http://'+str(self.host)+':'+str(self.port)+"/get_user_info?name="+name
         response = urllib.request.urlopen(url)
-        return
+        return response
 
-    def get_run_result (self,run_name):
+    def get_run_result (self,runid):
         url = 'http://'+str(self.host)+':'+str(self.port)+"/get_run_result?runid=5"
         response = urllib.request.urlopen(url)
         return response
@@ -58,7 +58,8 @@ class Sender:
     def dict (self,response):
         json_data= response.read().decode('utf-8')
         json_data=json.loads(json_data)
-        json_data=json_data[0]
+        if len(json_data)==1:
+          json_data=json_data[0]
         return json_data
 
     def add_user_to_tour (self,name,t_name):
@@ -87,21 +88,36 @@ class Sender:
         req=urllib.request.Request(url,post_data)
         response = urllib.request.urlopen(req)
 
+    def get_tournaments (self):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_tournaments"
+        response = urllib.request.urlopen(url)
+        return response
+
+
+    def get_checkers (self):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_checkers"
+        response = urllib.request.urlopen(url)
+        return response
+    def get_builders (self):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_builders"
+        response = urllib.request.urlopen(url)
+        return response
 
 
 
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    s.sendUserInfo("Kolyan2","kolyan@ya.ru")
-    # s.sendCreateTournament("test5","tictactoe",10,123123,123124123)
+    # s.sendUserInfo("Kolyan2","kolyan@ya.ru")
+    s.sendCreateTournament("test2","tictactoe",10,123123,123124123)
     # s.add_user_to_tour("Kolyan2","test5")
     # s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
     # response = s.getUserInfoByName('Barybasyan')
     # print(s.dict(response))
 
     # s.run_tournament("test5")
-    response = s.get_run_result("blabl")
+    # response = s.getUserInfoByName("Kolyan2")
+    response = s.get_tournaments()
     print(s.dict(response))
 
 

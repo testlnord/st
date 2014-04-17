@@ -37,7 +37,29 @@ def getUserInfo(db,path):
         data=db.getUser(None,dict["name"])
 
     jsonData = json.dumps(data)
+
     return jsonData.encode("utf-8")
+
+def get_tournaments(db,path):
+    data=db.getTournament()
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
+def get_checkers (db,path):
+    data = list(util.register.checkers.keys())
+    print(data)
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
+def get_builders (db,path):
+    data = list(util.register.builders.keys())
+    print(data)
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
+
+
+
 
 def addTournament(db,data,path):
     data=get_dict_from_json_data(data)

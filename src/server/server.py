@@ -18,6 +18,9 @@ from support import *
 @support (add_participant,"/add_participant")
 @support (run_tournament,"/run_tournament")
 @support (get_run_result,"/get_run_result")
+@support (get_tournaments,"/get_tournaments")
+@support (get_checkers,"/get_checkers")
+@support (get_builders,"/get_builders")
 class Handler(BaseHTTPRequestHandler):
     supportedHandlers = {}
 
@@ -37,7 +40,7 @@ class Handler(BaseHTTPRequestHandler):
         data=self.supportedHandlers[key](self.db,self.path)
         if data != None:
             self.wfile.write(data)
-        
+
 
 
 
