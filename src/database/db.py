@@ -61,6 +61,7 @@ class DB:
         self.conn.commit()
         return cur.lastrowid
 
+
     def getTournament(self, id=None, name=None):
         cur = self.conn.cursor()
         query = "SELECT name, checker, timelimit, start_time, end_time, id FROM tournament "

@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -53,11 +55,16 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 )
 
 #Registration stuff
 ACCOUNT_ACTIVATION_DAYS = 2
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+#todo setup email backend
+
+#i want make easy imports
+sys.path.append(os.path.abspath("./sur_tournament"))
 
 ROOT_URLCONF = 'web.urls'
 

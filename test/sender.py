@@ -57,6 +57,7 @@ class Sender:
 
     def dict (self,response):
         json_data= response.read().decode('utf-8')
+        json_data= response.read().decode('utf-8')
         json_data=json.loads(json_data)
         if len(json_data)==1:
           json_data=json_data[0]
