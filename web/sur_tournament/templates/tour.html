@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h3>{{ tour.name }}</h3>
+    <ul>
+        <li>
+            Start Time: {{ tour.start_time }}
+        </li>
+        <li>
+            End Time: {{ tour.end_time }}
+        </li>
+        <li>
+            Time limits: {{ tour.timelimit }}
+        </li>
+        <li>
+            Game: {{ tour.checker }}
+        </li>
+    </ul>
+
+{% endblock %}

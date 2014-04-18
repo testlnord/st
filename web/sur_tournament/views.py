@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 
 # Create your views here.
@@ -10,7 +10,36 @@ import forms.add_tournament
 
 def main(request, template_name='index.html'):
     tours = game_server.get_tournaments()
-    return render(request, template_name, {'user_info': tours})
+    return render(request, template_name, {'tours_info': tours})
+
+
+
+
+
+def tour(request, id = None, template_name='tour.html'):
+
+    if id is None:
+        return HttpResponseRedirect('/add_tour/') # Redirect after none ID
+    try:
+        id = int(id)
+    except ValueError:
+        return HttpResponseRedirect('/add_tour/') # Redirect after bad ID
+
+    tours = game_server.get_tournaments()
+    cur_tour = None
+
+    for tour in tours:
+        if tour["id"] == id:
+            cur_tour = tour
+            break
+    if cur_tour is None:
+        return HttpResponseRedirect('/add_tour/') # Redirect after bad ID
+
+    return render(request, template_name, {'tour':cur_tour})
+
+
+
+
 
 def add_tour(request, template_name='a_tour.html'):
     checkers = game_server.get_checkers()

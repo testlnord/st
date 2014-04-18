@@ -2,5 +2,12 @@
 {% load i18n %}
 
 {% block content %}
-{{ user_info }}
+    <ul>
+    {% for tour in tours_info %}
+    <li>
+        {{ tour.name }} <a href="/tour/{{ tour.id }}"> additional info </a>
+    </li>
+
+    {% endfor %}
+    </ul>
 {% endblock %}
