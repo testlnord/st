@@ -3,12 +3,8 @@ st
 
 Surreal Tournament 
 
-для работы требуется пакет django-registration
-
-установить можно через::
-```
-pip install django-registration
-```
+Для работы уже не требуется пакет django-registration. Он стал частью системы и
+распространяется вместе с ней. [Копирайты](https://bitbucket.org/ubernostrum/django-registration/src/tip/LICENSE)
 
 ##Просьба, поддерживать структуру каталогов.
 - test -- тесты
