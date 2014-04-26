@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^$', main),
     url('add_tour', add_tour),
     url('tour/(?P<id>\d*)/$', tour),
+    url('users/(.*)/$', users),
 )

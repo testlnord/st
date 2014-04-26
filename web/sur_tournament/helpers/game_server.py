@@ -2,7 +2,7 @@ import json
 import stserver_config
 import urllib
 
-def sendUserInfo ( name, email):
+def addUser ( name, email):
     dict = {
         "name" : name,
         "email" :email
@@ -16,7 +16,7 @@ def sendUserInfo ( name, email):
 
 
 
-def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
+def addTournament ( name, checker, timelimit, start_time, end_time):
     dict = {
         "name" : name,
         "checker" : str(checker),

@@ -38,8 +38,13 @@ def tour(request, id = None, template_name='tour.html'):
     return render(request, template_name, {'tour':cur_tour})
 
 
+def users(request, name = None, template_name = 'users.html'):
+    if name is None:
+        return HttpResponseRedirect('/add_tour/') # Redirect after none ID
 
-
+    user_info = game_server.getUserInfoByName(name)
+    #todo check for illegal user
+    return render(request, template_name, {'user_info': user_info})
 
 def add_tour(request, template_name='a_tour.html'):
     checkers = game_server.get_checkers()
