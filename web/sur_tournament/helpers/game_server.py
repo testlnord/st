@@ -19,7 +19,7 @@ def is_user_in_tour (name,t_name):
           +"/check_user_in_tour?name="+name+','+\
           't_name='+t_name
     response = urllib.request.urlopen(url)
-    return response.read(2)
+    return dict(response)
 
 def addTournament ( name, checker, timelimit, start_time, end_time):
     dict = {
