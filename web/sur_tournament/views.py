@@ -13,9 +13,6 @@ def main(request, template_name='index.html'):
     return render(request, template_name, {'tours_info': tours})
 
 
-
-
-
 def tour(request, id = None, template_name='tour.html'):
 
     if id is None:
@@ -35,34 +32,34 @@ def tour(request, id = None, template_name='tour.html'):
     if cur_tour is None:
         return HttpResponseRedirect('/') # Redirect after bad ID
 
-    form = None
+    formSend = None
+    formReg = None
     if request.user.is_authenticated():
-        t = game_server.is_user_in_tour(request.user.username, cur_tour['name'])
-        print (t)
-        user_registered = bool(t)    #todo Check user register or not
+        user_registered = bool(game_server.is_user_in_tour(request.user.username, cur_tour['name']))
+
         builders = game_server.get_builders()
         username = request.user.username
         if request.method == 'POST': # If the form has been submitted...
             if user_registered:
-                form = forms.tournament.SendSolution(username, cur_tour['name'], builders, request.POST, request.FILES)
-                if form.is_valid():
-                    form_data = form.cleaned_data
+                formSend = forms.tournament.SendSolution(username, cur_tour['name'], builders, request.POST, request.FILES)
+                if formSend.is_valid():
+                    form_data = formSend.cleaned_data
                     game_server.send_solution(form_data['user'],form_data['tour'],
                                               form_data['type'], request.FILES['solution'])
                     return HttpResponseRedirect('/tour/%d'%id) # Redirect after POST
             else:
-                form = forms.tournament.RegUser(username, cur_tour['name'], request.POST)
-                if form.is_valid():
-                    form_data = form.cleaned_data
+                formReg = forms.tournament.RegUser(username, cur_tour['name'], request.POST)
+                if formReg.is_valid():
+                    form_data = formReg.cleaned_data
                     game_server.add_user_to_tour(form_data['user'],form_data['tour'])
                     return HttpResponseRedirect('/tour/%d'%id) # Redirect after POST
         else:
             if user_registered:
-                form = forms.tournament.SendSolution(username, cur_tour['name'], builders)
+                formSend = forms.tournament.SendSolution(username, cur_tour['name'], builders)
             else:
-                form = forms.tournament.RegUser(username, cur_tour['name'])
+                formReg = forms.tournament.RegUser(username, cur_tour['name'])
 
-    return render(request, template_name, {'tour':cur_tour, 'form': form})
+    return render(request, template_name, {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg})
 
 
 def users(request, name = None, template_name = 'users.html'):

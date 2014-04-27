@@ -18,12 +18,19 @@
         </li>
     </ul>
 
-{% if form %}
+{% if formSend %}
     <form method="post" action="." enctype="multipart/form-data">
       {% csrf_token %}
-      {{ form.as_p }}
+      {{ formSend.as_p }}
 
       <input type="submit" value="{% trans 'Submit' %}" />
+    </form>
+{% elif formReg %}
+    <form method="post" action=".">
+      {% csrf_token %}
+      {{ formReg.as_p }}
+
+      <input type="submit" value="{% trans 'Join tournament' %}" />
     </form>
 {% endif %}
 
