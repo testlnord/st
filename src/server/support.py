@@ -30,10 +30,10 @@ def addUser(db,data,path):
         data=get_dict_from_json_data(data)
         name = data["name"]
         email= data["email"]
-        print("adding user")
+
         # try:
         db.addUser(name,email)
-        dict={"result" : "user "+name+" added"}
+        dict=["user "+name+" added"]
         jsonData = json.dumps(dict)
         # except sqlite3.Error as e:
         #     print("fail!")
@@ -41,7 +41,7 @@ def addUser(db,data,path):
         #     print(jsonData)
         #     # return jsonData.encode("utf-8")
             # print(jsonData)
-        # return jsonData.encode("utf-8")
+        return jsonData.encode("utf-8")
 
 
 def getUserInfo(db,path):
@@ -179,7 +179,9 @@ def parsePath(path):
     return dict
 
 def get_dict_from_json_data (json_post_data):
-    post_data = urllib.parse.parse_qs(json_post_data.read().decode('utf-8'),keep_blank_values=1)
+    # return json_post_data
+    print(json_post_data)
+    post_data = urllib.parse.parse_qs(json_post_data,keep_blank_values=1)
     json_data=next(iter(post_data.keys()))
     json_dict = json.loads(json_data)
     return json_dict

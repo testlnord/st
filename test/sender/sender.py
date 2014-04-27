@@ -20,8 +20,9 @@ class Sender:
         jsonData = json.dumps(dict)
         post_data = jsonData.encode("utf-8")
         url = 'http://'+str(self.host)+':'+str(self.port)+"/add_user"
-        req = urllib.request.Request(url,post_data)
-        response = urllib.request.urlopen(req)
+        req = urllib.request.Request(url)
+        req.add_header('content-type',"application/json")
+        response = urllib.request.urlopen(req,post_data)
         return response
 
 
@@ -116,20 +117,20 @@ class Sender:
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    # response=s.sendUserInfo("Kolyan11","kolyan@ya.ru")
+    response=s.sendUserInfo("Kolyan16","kolyan@ya.ru")
     # s.sendCreateTournament("test2","tictactoe",10,123123,123124123)
-    # s.add_user_to_tour("Kolyan2","test5")
-    s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
-    # response = s.getUserInfoByName('Barybasyan')
+    # s.add_user_to_tour("Kolyan","test5")
+    # s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
+    # response = s.getUserInfoByName('Kolyan')
     # print(s.dict(response))
 
     # s.run_tournament("test5")
     # response = s.get_tournaments()
-    response = s.is_user_in_tour("Kolyan","test5")
+    # response = s.is_user_in_tour("Kolyan2","test5")
     # response = s.get_tournaments()
     # response = s.getUserInfoByName("Kolyan10")
-    print(s.dict(response))
-
+    res = s.dict(response)
+    print(res)
 
 
 

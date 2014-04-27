@@ -52,9 +52,14 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('content-type',"application/json")
         self.end_headers()
 
+        length =int( self.headers.get('content-length'))
+
+        data=self.rfile.read(length).decode('utf-8')
+        # print(type(data))
         key = self.getKeyFromAddres(self.path)
-        data=self.supportedHandlers[key](self.db,self.rfile,self.path)
+        data=self.supportedHandlers[key](self.db,data,self.path)
         if data != None:
+            print(data)
             self.wfile.write(data)
 
 
