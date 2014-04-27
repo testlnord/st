@@ -59,7 +59,7 @@ class DB:
         cur.execute("SELECT user.name , tournament.name "
                     "FROM user JOIN participants ON (user.id = participants.user_id) JOIN tournament ON (participants.tour_id = tournament.id)"
                     "WHERE user.name = ? AND tournament.name = ?", (name,t_name))
-        if cur.rowcount>0:
+        if len(cur.fetchall())>0:
             return [True]
         else:
             return [False]
