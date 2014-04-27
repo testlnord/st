@@ -6,6 +6,7 @@ import config
 import json
 import urllib.parse
 import datetime
+import time
 import sqlite3
 
 def support(method,key):
@@ -18,6 +19,9 @@ def support(method,key):
 def make_out_path(tour_id, user_id):
     tour_path = os.path.join(config.out_path, str(tour_id))
     res_path = os.path.join(tour_path, str(user_id))
+    #adding send time mark
+    res_path = os.path.join(res_path, str(time.time()))
+
     return res_path
 
 #DECORATORS
@@ -147,6 +151,7 @@ def addBuild(db, user_name, tour_name, file, builder_name):
     tour_info = db.getTournament(name=tour_name)[0]
     o_path = make_out_path(tour_info["id"], user_info["id"])
     os.makedirs(o_path)
+    print(o_path)
     builder = util.register.builders[builder_name]
     src_path = os.path.join(o_path, builder.def_src_name)
     with open(src_path, "w") as src_file:
