@@ -14,7 +14,12 @@ def addUser ( name, email):
     response = urllib.request.urlopen(req)
 
 
-
+def is_user_in_tour (name,t_name):
+    url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)\
+          +"/check_user_in_tour?name="+name+','+\
+          't_name='+t_name
+    response = urllib.request.urlopen(url)
+    return response.read(2)
 
 def addTournament ( name, checker, timelimit, start_time, end_time):
     dict = {

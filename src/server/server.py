@@ -21,6 +21,7 @@ from support import *
 @support (get_tournaments,"/get_tournaments")
 @support (get_checkers,"/get_checkers")
 @support (get_builders,"/get_builders")
+@support (checkUserInTournament,"/check_user_in_tour")
 class Handler(BaseHTTPRequestHandler):
     supportedHandlers = {}
 
@@ -37,6 +38,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         key = self.getKeyFromAddres(self.path)
+        print(key)
         data=self.supportedHandlers[key](self.db,self.path)
         if data != None:
             self.wfile.write(data)
@@ -47,12 +49,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         self.send_response(200)
-        self.send_header('content-type','text/html')
+        self.send_header('content-type',"application/json")
         self.end_headers()
 
         key = self.getKeyFromAddres(self.path)
-        # print(self.rfile.read().decode('utf-8'))
-        self.supportedHandlers[key](self.db,self.rfile,self.path)
+        data=self.supportedHandlers[key](self.db,self.rfile,self.path)
+        if data != None:
+            self.wfile.write(data)
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):

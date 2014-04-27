@@ -37,7 +37,9 @@ def tour(request, id = None, template_name='tour.html'):
 
     form = None
     if request.user.is_authenticated():
-        user_registered = True    #todo Check user register or not
+        t = game_server.is_user_in_tour(request.user.username, cur_tour['name'])
+        print (t)
+        user_registered = bool(t)    #todo Check user register or not
         builders = game_server.get_builders()
         username = request.user.username
         if request.method == 'POST': # If the form has been submitted...
