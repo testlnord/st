@@ -22,6 +22,7 @@ class Sender:
         url = 'http://'+str(self.host)+':'+str(self.port)+"/add_user"
         req = urllib.request.Request(url,post_data)
         response = urllib.request.urlopen(req)
+        return response
 
 
 
@@ -45,6 +46,13 @@ class Sender:
         response = urllib.request.urlopen(url)
         return response
 
+    def is_user_in_tour (self,name,t_name):
+        url = 'http://'+str(self.host)+':'+str(self.port)\
+              +"/check_user_in_tour?name="+name+','+\
+              't_name='+t_name
+        response = urllib.request.urlopen(url)
+        return response
+
     def get_run_result (self,runid):
         url = 'http://'+str(self.host)+':'+str(self.port)+"/get_run_result?runid=5"
         response = urllib.request.urlopen(url)
@@ -56,7 +64,6 @@ class Sender:
         return response
 
     def dict (self,response):
-        json_data= response.read().decode('utf-8')
         json_data= response.read().decode('utf-8')
         json_data=json.loads(json_data)
         if len(json_data)==1:
@@ -109,16 +116,18 @@ class Sender:
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    # s.sendUserInfo("Kolyan2","kolyan@ya.ru")
-    s.sendCreateTournament("test2","tictactoe",10,123123,123124123)
+    # response=s.sendUserInfo("Kolyan11","kolyan@ya.ru")
+    # s.sendCreateTournament("test2","tictactoe",10,123123,123124123)
     # s.add_user_to_tour("Kolyan2","test5")
-    # s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
+    s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
     # response = s.getUserInfoByName('Barybasyan')
     # print(s.dict(response))
 
     # s.run_tournament("test5")
-    # response = s.getUserInfoByName("Kolyan2")
-    response = s.get_tournaments()
+    # response = s.get_tournaments()
+    response = s.is_user_in_tour("Kolyan","test5")
+    # response = s.get_tournaments()
+    # response = s.getUserInfoByName("Kolyan10")
     print(s.dict(response))
 
 

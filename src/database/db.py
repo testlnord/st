@@ -54,6 +54,17 @@ class DB:
 
         return result
 
+    def checkUserInTour (self,name,t_name):
+        cur = self.conn.cursor()
+        cur.execute("SELECT user.name , tournament.name "
+                    "FROM user JOIN participants ON (user.id = participants.user_id) JOIN tournament ON (participants.tour_id = tournament.id)"
+                    "WHERE user.name = ? AND tournament.name = ?", (name,t_name))
+        if cur.rowcount>0:
+            return [True]
+        else:
+            return [False]
+
+
     def addTournament(self, name, checker, timelimit, start_time, end_time):
         cur = self.conn.cursor()
         cur.execute("INSERT INTO tournament(name, checker, timelimit, start_time, end_time) VALUES (?, ?, ?, ?, ?)",

@@ -6,6 +6,7 @@ import config
 import json
 import urllib.parse
 import datetime
+import sqlite3
 
 def support(method,key):
     def adder(handler):
@@ -21,23 +22,32 @@ def make_out_path(tour_id, user_id):
 
 #DECORATORS
 def addUser(db,data,path):
-    data=get_dict_from_json_data(data)
-    name = data["name"]
-    email= data["email"]
-    db.addUser(name,email)
+
+        data=get_dict_from_json_data(data)
+        name = data["name"]
+        email= data["email"]
+        print("adding user")
+        # try:
+        db.addUser(name,email)
+        dict={"result" : "user "+name+" added"}
+        jsonData = json.dumps(dict)
+        # except sqlite3.Error as e:
+        #     print("fail!")
+        #     jsonData = json.dumps(["failed to add user"+ name])
+        #     print(jsonData)
+        #     # return jsonData.encode("utf-8")
+            # print(jsonData)
+        # return jsonData.encode("utf-8")
+
 
 def getUserInfo(db,path):
     dict=parsePath(path)
 
     if "id" in dict:
-        print(dict["id"])
         data=db.getUser(dict["id"])
     else:
-        print(dict["name"])
         data=db.getUser(None,dict["name"])
-
     jsonData = json.dumps(data)
-
     return jsonData.encode("utf-8")
 
 def get_tournaments(db,path):
@@ -95,6 +105,11 @@ def get_run_result (db,path):
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
+def checkUserInTournament (db,path):
+     dict=parsePath(path)
+     data = db.checkUserInTour(dict['name'],dict['t_name'])
+     jsonData = json.dumps(data)
+     return jsonData.encode("utf-8")
 
 
 def run(db, tour_name):
