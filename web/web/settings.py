@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = (
 #Registration stuff
 ACCOUNT_ACTIVATION_DAYS = 2
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+LOGIN_REDIRECT_URL = '/'
 #todo setup email backend
 
 #i want make easy imports

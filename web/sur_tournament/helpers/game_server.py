@@ -66,15 +66,15 @@ def add_user_to_tour (name,t_name):
 
 
 
-def send_solution (user_name,tournament_name,type,file_path):
+def send_solution (user_name,tournament_name,type,file):
     args="name="+user_name
     args+=","
     args+="tournament_name="+tournament_name
     args+=","
     args+="type="+type
     url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/send_solution?"+args
-    f = open(file_path, 'r')
-    post_data = f.read().encode('utf-8')
+
+    post_data = file.read()
     req=urllib.request.Request(url,post_data)
     response = urllib.request.urlopen(req)
 
