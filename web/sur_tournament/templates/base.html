@@ -4,7 +4,7 @@
   <head>
     {%load staticfiles%}
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter {{ "asdfasdfga" }}</title>
+    <title>Surreal Tournament</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -68,9 +68,9 @@
                 {% endif %}
             </p>
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="/">Home</a></li>
               <li><a href="add_tour">Add tournament</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -83,25 +83,6 @@
     </div>
 <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li class="active"><a href="  /accounts/register">Register</a></li>
-              <li class="nav-header"><a href="/accounts/login">LogIn</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
         <div class="span9">
             <div id="content">
             {% block content %}{% endblock %}
@@ -113,7 +94,7 @@
 
       <footer>
         {% block footer %}
-        <p>&copy; Company 2013</p>
+        <p>&copy; SPbAU RAS 2014</p>
         {% endblock %}
       </footer>
 

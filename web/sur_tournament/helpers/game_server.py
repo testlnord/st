@@ -21,7 +21,7 @@ def is_user_in_tour (name,t_name):
     response = urllib.request.urlopen(url)
     return dict(response)
 
-def addTournament ( name, checker, timelimit, start_time, end_time):
+def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
     dict = {
         "name" : name,
         "checker" : str(checker),
