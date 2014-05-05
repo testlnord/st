@@ -167,3 +167,15 @@ class DB:
         return result
 
 
+    def getFreshTourResults(self, tour_name):
+        tour_info = self.getTournament(name=tour_name)
+        if not tour_info:
+            return []
+        tour_info = tour_info[0]
+
+        cur = self.conn.cursor()
+        res = cur.execute("SELECT timestart, id from run where tour_id = ? order by timestart", tour_info["id"])
+
+        if not res:
+            return []
+        return self.getRunResult(res[0][1])

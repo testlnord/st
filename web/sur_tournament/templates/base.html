@@ -69,7 +69,9 @@
             </p>
             <ul class="nav">
               <li class="active"><a href="/">Home</a></li>
-              <li><a href="add_tour">Add tournament</a></li>
+              {% if user.is_authenticated %}
+                <li><a href="add_tour">Add tournament</a></li>
+              {% endif %}
               <li><a href="contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -83,6 +85,7 @@
     </div>
 <div class="container-fluid">
       <div class="row-fluid">
+        <div class="span3"></div>
         <div class="span9">
             <div id="content">
             {% block content %}{% endblock %}

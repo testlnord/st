@@ -71,6 +71,8 @@ def users(request, name = None, template_name = 'users.html'):
     return render(request, template_name, {'user_info': user_info})
 
 def add_tour(request, template_name='a_tour.html'):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/') # Redirect if not auth
     checkers = game_server.get_checkers()
     if not isinstance(checkers, (list, tuple)) or isinstance(checkers, str):
             checkers = [checkers]
