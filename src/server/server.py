@@ -29,7 +29,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
-            if None != data:
+            if data is not None:
                 self.wfile.write(data)
 
         except:
@@ -49,7 +49,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('content-type', "application/json")
             self.end_headers()
-            if None != data:
+            if data is not None:
                 print(data)
                 self.wfile.write(data)
 
