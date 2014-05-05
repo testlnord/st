@@ -21,22 +21,24 @@ class Handler(BaseHTTPRequestHandler):
         return str.split('?')[0]
 
     def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
+
 
         key = self.get_key_from_addres(self.path)
         try:
             data = supportedHandlers[key](self.db, self.path)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
             if None != data:
                 self.wfile.write(data)
+
         except:
             self.send_response(400)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
 
     def do_POST(self):
-        self.send_response(200)
-        self.send_header('content-type', "application/json")
-        self.end_headers()
+
 
         length = int(self.headers.get('content-length'))
 
@@ -44,11 +46,17 @@ class Handler(BaseHTTPRequestHandler):
             data = self.rfile.read(length).decode('utf-8')
             key = self.get_key_from_addres(self.path)
             data = supportedHandlers[key](self.db, data, self.path)
+            self.send_response(200)
+            self.send_header('content-type', "application/json")
+            self.end_headers()
             if None != data:
                 print(data)
                 self.wfile.write(data)
+
         except:
              self.send_response(400)
+             self.send_header('content-type', "application/json")
+             self.end_headers()
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
