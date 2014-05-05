@@ -15,14 +15,17 @@ cpp_builder_path = os.path.abspath("./builder/cpp")
 java_builder_path = os.path.abspath("./builder/java")
 cpp_runner_path = os.path.abspath("./runner/cpp")
 java_runner_path = os.path.abspath("./runner/java")
-
-
 checker_path = os.path.abspath("./checker")
+out_path = os.path.abspath("../out/")
 
+#############################
+##      Server configs     ##
+#############################
 server_path = os.path.abspath("./server")
 sender = os.path.abspath("./server/sender.py")
 serverHost = "localhost"
 serverPort = 8080
+num_of_server_threads=10
 
 
 
@@ -35,7 +38,7 @@ sys.path.append(checker_path)
 sys.path.append(server_path)
 sys.path.append(db_path)
 
-out_path = os.path.abspath("../out/")
+
 
 #############################
 #    Stuff for start.py     #

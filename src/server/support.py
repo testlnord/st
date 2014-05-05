@@ -9,10 +9,13 @@ import datetime
 import time
 import sqlite3
 
-def support(method,key):
-    def adder(handler):
-        handler.supportedHandlers[key]=method
-        return handler
+
+supportedHandlers = {}
+
+def support(key):
+    def adder(method):
+        supportedHandlers[key]=method
+        return method
     return adder
 
 
@@ -25,6 +28,7 @@ def make_out_path(tour_id, user_id):
     return res_path
 
 #DECORATORS
+@support("/add_user")
 def addUser(db,data,path):
 
         data=get_dict_from_json_data(data)
@@ -43,7 +47,7 @@ def addUser(db,data,path):
             # print(jsonData)
         return jsonData.encode("utf-8")
 
-
+@support("/get_user_info")
 def getUserInfo(db,path):
     dict=parsePath(path)
 
@@ -53,28 +57,27 @@ def getUserInfo(db,path):
         data=db.getUser(None,dict["name"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
-
+@support ("/get_tournaments")
 def get_tournaments(db,path):
     data=db.getTournament()
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
+@support ("/get_checkers")
 def get_checkers (db,path):
     data = list(util.register.checkers.keys())
     print(data)
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
+@support ("/get_builders")
 def get_builders (db,path):
     data = list(util.register.builders.keys())
     print(data)
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
-
-
-
-
+@support("/create_tournament")
 def addTournament(db,data,path):
     data=get_dict_from_json_data(data)
     name = data["name"]
@@ -84,13 +87,14 @@ def addTournament(db,data,path):
     end_time  = data ["end_time"]
     db.addTournament(name,checker,timelimit,start_time,end_time)
 
+@support ("/add_participant")
 def add_participant(db,data,path):
     data=get_dict_from_json_data(data)
     name = data["name"]
     t_name=data["tournament_name"]
     db.addParticipantByNames(t_name,name)
 
-
+@support ("/send_solution")
 def add_solution (db,data,path):
     dict=parsePath(path)
     name=dict["name"]
@@ -98,17 +102,20 @@ def add_solution (db,data,path):
     type=dict["type"]
     addBuild(db,name,t_name,data,type)
 
+@support ("/run_tournament")
 def run_tournament (db,path):
     dict=parsePath(path)
     run(db,dict["tournament_name"])
     return None
 
+@support ("/get_run_result")
 def get_run_result (db,path):
     dict=parsePath(path)
     data=db.getRunResult(dict["runid"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
+@support("/check_user_in_tour")
 def checkUserInTournament (db,path):
      dict=parsePath(path)
      data = db.checkUserInTour(dict['name'],dict['t_name'])
@@ -145,7 +152,6 @@ def run(db, tour_name):
                 p1, p2 = checker.points()
                 db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
 
-
 def addBuild(db, user_name, tour_name, file, builder_name):
     user_info = db.getUser(name=user_name)[0]
     tour_info = db.getTournament(name=tour_name)[0]
@@ -168,6 +174,7 @@ def addBuild(db, user_name, tour_name, file, builder_name):
 
     print(builder)
     db.addSolution(user_info["id"], tour_info["id"], b_stat, str(datetime.datetime.now()), builder_name, o_file)
+
 
 def parsePath(path):
     s=path.split("?")[1]
