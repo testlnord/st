@@ -117,18 +117,16 @@ class Sender:
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    response=s.sendUserInfo("Kolyan16","kolyan@ya.ru")
-    # s.sendCreateTournament("test2","tictactoe",10,123123,123124123)
-    # s.add_user_to_tour("Kolyan","test5")
-    # s.send_solution("Kolyan","test5","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
-    # response = s.getUserInfoByName('Kolyan')
-    # print(s.dict(response))
+    # response=s.sendUserInfo("Kolyan","kolyan@ya.ru")
+    # s.sendCreateTournament("test","tictactoe",10,123123,123124123)
+    # s.add_user_to_tour("Kolyan","test")
+    # s.send_solution("Kolyan","test","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
 
-    # s.run_tournament("test5")
+    # s.run_tournament("test")
     # response = s.get_tournaments()
-    # response = s.is_user_in_tour("Kolyan2","test5")
-    # response = s.get_tournaments()
-    # response = s.getUserInfoByName("Kolyan10")
+    # response = s.is_user_in_tour("Kolyan","test")
+    response = s.get_tournaments()
+    # response = s.getUserInfoByName("Kolyan")
     res = s.dict(response)
     print(res)
 

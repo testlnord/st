@@ -26,10 +26,12 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         key = self.get_key_from_addres(self.path)
-
-        data = supportedHandlers[key](self.db, self.path)
-        if None != data:
-            self.wfile.write(data)
+        try:
+            data = supportedHandlers[key](self.db, self.path)
+            if None != data:
+                self.wfile.write(data)
+        except:
+            self.send_response(400)
 
     def do_POST(self):
         self.send_response(200)
@@ -38,12 +40,15 @@ class Handler(BaseHTTPRequestHandler):
 
         length = int(self.headers.get('content-length'))
 
-        data = self.rfile.read(length).decode('utf-8')
-        key = self.get_key_from_addres(self.path)
-        data = supportedHandlers[key](self.db, data, self.path)
-        if None != data:
-            print(data)
-            self.wfile.write(data)
+        try:
+            data = self.rfile.read(length).decode('utf-8')
+            key = self.get_key_from_addres(self.path)
+            data = supportedHandlers[key](self.db, data, self.path)
+            if None != data:
+                print(data)
+                self.wfile.write(data)
+        except:
+             self.send_response(400)
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
