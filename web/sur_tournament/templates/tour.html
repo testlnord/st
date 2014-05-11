@@ -19,11 +19,20 @@
     </ul>
 
 {% if formSend %}
+    {% if status %}
+        {% if status.ok %}
+            Your solution was builded successfully!
+        {% else %}
+            Error occured:<br/>
+            <textarea readonly="True" cols="40" > {{ status.msg }} </textarea>
+        {% endif %}
+    {% endif %}
     <form method="post" action="." enctype="multipart/form-data">
       {% csrf_token %}
       {{ formSend.as_p }}
 
       <input type="submit" value="{% trans 'Submit' %}" />
+
     </form>
 {% elif formReg %}
     <form method="post" action=".">
@@ -32,6 +41,7 @@
 
       <input type="submit" value="{% trans 'Join tournament' %}" />
     </form>
+
 {% endif %}
 
 {% endblock %}

@@ -53,7 +53,10 @@ class Handler(BaseHTTPRequestHandler):
                 print(data)
                 self.wfile.write(data)
 
-        except:
+        except Exception as e:
+             print(e)
+
+             print (e.with_traceback(e.__traceback__))
              self.send_response(400)
              self.send_header('content-type', "application/json")
              self.end_headers()

@@ -12,6 +12,12 @@ import sqlite3
 
 supportedHandlers = {}
 
+
+def jsonify( data):
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
+
 def support(key):
     def adder(method):
         supportedHandlers[key]=method
@@ -38,14 +44,8 @@ def addUser(db,data,path):
         # try:
         db.addUser(name,email)
         dict=["user "+name+" added"]
-        jsonData = json.dumps(dict)
-        # except sqlite3.Error as e:
-        #     print("fail!")
-        #     jsonData = json.dumps(["failed to add user"+ name])
-        #     print(jsonData)
-        #     # return jsonData.encode("utf-8")
-            # print(jsonData)
-        return jsonData.encode("utf-8")
+        return jsonify(dict)
+
 
 @support("/get_user_info")
 def getUserInfo(db,path):
@@ -55,13 +55,13 @@ def getUserInfo(db,path):
         data=db.getUser(dict["id"])
     else:
         data=db.getUser(None,dict["name"])
-    jsonData = json.dumps(data)
-    return jsonData.encode("utf-8")
+    return jsonify(data)
+
 @support ("/get_tournaments")
 def get_tournaments(db,path):
     data=db.getTournament()
-    jsonData = json.dumps(data)
-    return jsonData.encode("utf-8")
+    return jsonify(data)
+
 
 @support ("/get_checkers")
 def get_checkers (db,path):
@@ -94,13 +94,15 @@ def add_participant(db,data,path):
     t_name=data["tournament_name"]
     db.addParticipantByNames(t_name,name)
 
+
 @support ("/send_solution")
 def add_solution (db,data,path):
     dict=parsePath(path)
     name=dict["name"]
     t_name=dict["tournament_name"]
     type=dict["type"]
-    addBuild(db,name,t_name,data,type)
+    return jsonify(addBuild(db, name, t_name, data, type))
+
 
 @support ("/run_tournament")
 def run_tournament (db,path):
@@ -153,6 +155,8 @@ def run(db, tour_name):
                 db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
 
 def addBuild(db, user_name, tour_name, file, builder_name):
+    result = {"ok": True, "msg": ''}
+
     user_info = db.getUser(name=user_name)[0]
     tour_info = db.getTournament(name=tour_name)[0]
     o_path = make_out_path(tour_info["id"], user_info["id"])
@@ -161,20 +165,23 @@ def addBuild(db, user_name, tour_name, file, builder_name):
     builder = util.register.builders[builder_name]
     src_path = os.path.join(o_path, builder.def_src_name)
     with open(src_path, "w") as src_file:
-        b = file.read(1).decode('utf-8')
-        while b != "":
-            src_file.write(b)
-            b = file.read(1).decode('utf-8')
+        src_file.write(file)
+        #b = file.read(1).decode('utf-8')
+        #while b != "":
+        #    src_file.write(b)
+        #    b = file.read(1).decode('utf-8')
     b_stat = 0
     o_file = ""
     try:
         o_file = builder.build(src_path, o_path)
-    except util.exceptions.BuildFailedException:
+    except util.exceptions.BuildFailedException as e:
         b_stat = 1
+        result["ok"] = False
+        result["msg"] = str(e)
 
-    print(builder)
+    #print(builder)
     db.addSolution(user_info["id"], tour_info["id"], b_stat, str(datetime.datetime.now()), builder_name, o_file)
-
+    return result
 
 def parsePath(path):
     s=path.split("?")[1]

@@ -13,7 +13,7 @@ def main(request, template_name='index.html'):
     return render(request, template_name, {'tours_info': tours})
 
 
-def tour(request, id = None, template_name='tour.html'):
+def tour(request, id = None, template_name='tour.html', s={}):
 
     if id is None:
         return HttpResponseRedirect('/') # Redirect after none ID
@@ -44,9 +44,13 @@ def tour(request, id = None, template_name='tour.html'):
                 formSend = forms.tournament.SendSolution(username, cur_tour['name'], builders, request.POST, request.FILES)
                 if formSend.is_valid():
                     form_data = formSend.cleaned_data
-                    game_server.send_solution(form_data['user'],form_data['tour'],
+                    status = game_server.send_solution(form_data['user'],form_data['tour'],
                                               form_data['type'], request.FILES['solution'])
-                    return HttpResponseRedirect('/tour/%d'%id) # Redirect after POST
+                    return render(request,
+                                  template_name,
+                                  {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg, 'status': status}
+                    )
+                    #return HttpResponseRedirect('/tour/%d'%id, s=status) # Redirect after POST
             else:
                 formReg = forms.tournament.RegUser(username, cur_tour['name'], request.POST)
                 if formReg.is_valid():
@@ -59,7 +63,7 @@ def tour(request, id = None, template_name='tour.html'):
             else:
                 formReg = forms.tournament.RegUser(username, cur_tour['name'])
 
-    return render(request, template_name, {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg})
+    return render(request, template_name, {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg, 'status': s})
 
 
 def users(request, name = None, template_name = 'users.html'):

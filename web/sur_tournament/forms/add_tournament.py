@@ -1,4 +1,5 @@
 from django import forms
+from forms.widgets.datepicker import DatepickerInput
 
 class AddTournamentForm(forms.Form):
     name = forms.CharField(max_length=100)
@@ -11,3 +12,4 @@ class AddTournamentForm(forms.Form):
         super(AddTournamentForm, self).__init__(*args, **kwargs)
         if checkers:
             self.fields['checker'].choices = [(x,x) for x in checkers]
+        self.fields['end_time'].widget = DatepickerInput()

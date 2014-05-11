@@ -24,7 +24,7 @@ class JavaBuilder:
         proc.wait()
         if proc.returncode != 0:
             print("return code=",proc.returncode)
-            raise util.register.BuildFailedException(err.decode("UTF8"))
+            raise util.exceptions.BuildFailedException(err.decode("UTF8"))
 
         return fileName
 

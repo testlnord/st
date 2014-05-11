@@ -82,6 +82,7 @@ def send_solution (user_name,tournament_name,type,file):
     post_data = file.read()
     req=urllib.request.Request(url,post_data)
     response = urllib.request.urlopen(req)
+    return dict(response)
 
 def get_tournaments ():
     url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_tournaments"
