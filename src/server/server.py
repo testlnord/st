@@ -4,6 +4,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from queue import Queue
 
+import traceback
+
 import db
 import threading, socket
 
@@ -37,6 +39,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
+        self.wfile.close()
+
     def do_POST(self):
 
 
@@ -53,13 +57,19 @@ class Handler(BaseHTTPRequestHandler):
                 print(data)
                 self.wfile.write(data)
 
-        except Exception as e:
+
+        except :
              print(e)
 
              print (e.with_traceback(e.__traceback__))
              self.send_response(400)
              self.send_header('content-type', "application/json")
              self.end_headers()
+             tb = traceback.format_exc().encode("utf-8")
+             self.wfile.write(tb)
+
+        self.wfile.write.close()
+
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
