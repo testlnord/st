@@ -2,6 +2,8 @@ __author__ = 's'
 import os
 import sys
 import config
+import urllib.parse
+import urllib.request
 
 
 import util.register
@@ -80,6 +82,11 @@ class Run_runner:
                             "  WHERE game.log = ?", ('NOT PLAYED',))
         for game in games:
             self.play_game(game)
+    def run_active_tours(self):
+        def run_active_tour (self):
+        url = 'http://'+str(config.serverHost)+':'+str(config.serverPort)+"/run_active_tours"
+        response = urllib.request.urlopen(url)
+        return  response
 
 def add_cron_entry():
     shabang = "#!/bin/bash"
@@ -115,5 +122,5 @@ now = datetime.datetime.now()
 print("run runner has been run at  %s" %now)
 
 runner = Run_runner()
-runner.run()
+runner.run_active_tours()
 
