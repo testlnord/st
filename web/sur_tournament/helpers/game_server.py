@@ -39,7 +39,7 @@ def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
 def getUserInfoByName (name):
     url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_user_info?name="+name
     response = urllib.request.urlopen(url)
-    return response
+    return dict(response)
 
 def get_run_result (runid):
     url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_run_result?runid=5"

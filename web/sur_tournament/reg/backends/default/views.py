@@ -71,6 +71,7 @@ class RegistrationView(BaseRegistrationView):
         class of this backend as the sender.
 
         """
+        2 + sdfnkwh392l3nl
         username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
         if Site._meta.installed:
             site = Site.objects.get_current()

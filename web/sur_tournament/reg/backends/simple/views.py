@@ -3,10 +3,10 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 
-from registration import signals
-from registration.views import RegistrationView as BaseRegistrationView
+from reg import signals
+from reg.views import RegistrationView as BaseRegistrationView
 
-from game_server import addUser
+from helpers.game_server import addUser
 
 class RegistrationView(BaseRegistrationView):
     """
@@ -19,7 +19,7 @@ class RegistrationView(BaseRegistrationView):
     def register(self, request, **cleaned_data):
         username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
         addUser(username, email) #todo check for errors
-
+        print(username)
         User.objects.create_user(username, email, password)
 
         new_user = authenticate(username=username, password=password)

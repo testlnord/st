@@ -101,9 +101,13 @@ class DB:
 
     def addParticipantByNames(self, tour_name, user_name):
         user = self.getUser(name=user_name)
+        print (user)
         tour = self.getTournament(name=tour_name)
-        return self.addParticipant(tour[0]["id"], user[0]["id"])
-
+        print(tour)
+        if user and tour:
+            return self.addParticipant(tour[0]["id"], user[0]["id"])
+        else:
+            return None
 
     def getParticipantsInTournament(self, tour_id):
         cur = self.conn.cursor()

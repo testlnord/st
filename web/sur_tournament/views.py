@@ -77,6 +77,7 @@ def users(request, name = None, template_name = 'users.html'):
 
     user_info = game_server.getUserInfoByName(name)
     #todo check for illegal user
+
     return render(request, template_name, {'user_info': user_info})
 
 def add_tour(request, template_name='a_tour.html'):

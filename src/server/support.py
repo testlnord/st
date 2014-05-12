@@ -93,11 +93,14 @@ def addTournament(db,data,path):
     end_time  = data ["end_time"]
     db.addTournament(name,checker,timelimit,start_time,end_time)
 
+
 @support ("/add_participant")
 def add_participant(db,data,path):
-    data=get_dict_from_json_data(data)
+    data = get_dict_from_json_data(data)
+    if not data:
+        return
     name = data["name"]
-    t_name=data["tournament_name"]
+    t_name = data["tournament_name"]
     db.addParticipantByNames(t_name,name)
 
 
