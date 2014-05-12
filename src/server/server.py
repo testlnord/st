@@ -26,29 +26,31 @@ class Handler(BaseHTTPRequestHandler):
 
 
         key = self.get_key_from_addres(self.path)
-        try:
-            data = supportedHandlers[key](self.db, self.path)
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            if data is not None:
-                self.wfile.write(data)
+        data = supportedHandlers[key](self.db, self.path)
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        if data is not None:
+            self.wfile.write(data)
+        # try:
+        #     data = supportedHandlers[key](self.db, self.path)
+        #     self.send_response(200)
+        #     self.send_header("Content-type", "application/json")
+        #     self.end_headers()
+        #     if data is not None:
+        #         self.wfile.write(data)
 
-        except Exception as e:
-             print(e)
+        # except Exception as e:
+        #      print(e)
+        #
+        #      print (e.with_traceback(e.__traceback__))
+        #      self.send_response(400)
+        #      self.send_header('content-type', "application/json")
+        #      self.end_headers()
+        #      tb = traceback.format_exc().encode("utf-8")
+        #      self.wfile.write(tb)
 
-             print (e.with_traceback(e.__traceback__))
-             self.send_response(400)
-             self.send_header('content-type', "application/json")
-             self.end_headers()
-             tb = traceback.format_exc().encode("utf-8")
-             self.wfile.write(tb)
-        #except:
-        #    self.send_response(400)
-        #    self.send_header("Content-type", "application/json")
-        #    self.end_headers()
 
-        #self.wfile.close()
 
     def do_POST(self):
 

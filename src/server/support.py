@@ -116,7 +116,10 @@ def add_solution (db,data,path):
 @support ("/run_tournament")
 def run_tournament (db,path):
     dict=parsePath(path)
-    create_run(db,dict["tournament_name"],dict.get("run_name","default_run"))
+    tour_name = dict["tournament_name"]
+    tour_info = db.getTournament(name=tour_name)[0]
+    run_by_tinfo(db,tour_info)
+    # create_run(db,dict["tournament_name"])
     return None
 
 @support ("/get_run_result")
@@ -148,7 +151,7 @@ def run_by_tinfo (db,tinfo):
      tid = tinfo["id"]
      timelimit = tinfo["tl"]
      run_id = db.addRun(tid, str(datetime.datetime.now()))
-     solutions = db.getSolutionsInTournament()
+     solutions = db.getSolutionsInTournament(tid)
 
      for sol1_num, sol1 in enumerate(solutions[:-1]):
             for sol2 in solutions[sol1_num + 1:]:

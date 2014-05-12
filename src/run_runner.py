@@ -103,7 +103,7 @@ def add_cron_entry():
     cur_cron.read()
     cur_cron.close()
 
-    if script not in open('current_crontab.txt'):
+    if command not in open('current_crontab.txt').read():
         fp = open('current_crontab.txt',"r+")
         if len(fp.readlines()) is 0:
              print("%s " %shabang,file=fp)
