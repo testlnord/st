@@ -82,11 +82,11 @@ class Run_runner:
                             "  WHERE game.log = ?", ('NOT PLAYED',))
         for game in games:
             self.play_game(game)
+
     def run_active_tours(self):
-        def run_active_tour (self):
-        url = 'http://'+str(config.serverHost)+':'+str(config.serverPort)+"/run_active_tours"
-        response = urllib.request.urlopen(url)
-        return  response
+         url = 'http://'+str(config.serverHost)+':'+str(config.serverPort)+"/run_active_tours"
+         response = urllib.request.urlopen(url)
+         return  response
 
 def add_cron_entry():
     shabang = "#!/bin/bash"
@@ -118,9 +118,9 @@ def add_cron_entry():
 
 
 
-now = datetime.datetime.now()
-print("run runner has been run at  %s" %now)
-
-runner = Run_runner()
-runner.run_active_tours()
+if __name__ == "main":
+    now = datetime.datetime.now()
+    print("run runner has been run at  %s" %now)
+    runner = Run_runner()
+    runner.run_active_tours()
 
