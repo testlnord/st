@@ -10,14 +10,15 @@ import util.exceptions
 
 
 class JavaRunner:
-    def __init__ (self, src):
+    def __init__ (self, src, timeout):
         path, fileName = os.path.split(src)
         self.proc = subprocess.Popen(["java -cp %s %s"%(path,fileName)], shell= True, stderr=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stdin=subprocess.PIPE)
+        self.timeout = timeout
+        print(src)
 
-
-    def run(self, arg,timeout):
+    def step(self, arg):
 
         def target(res):
             (o, e) = self.proc.communicate(bytes(arg, "UTF8"))
@@ -27,13 +28,14 @@ class JavaRunner:
         res = []
         thread = threading.Thread(target=target, args = (res,))
         thread.start()
-        thread.join(timeout)
+        thread.join(self.timeout)
 
         if thread.is_alive():
             self.proc.terminate()
             thread.join()
-            raise util.exceptions.TimeOutError(timeout)
+            raise util.exceptions.TimeOutError(self.timeout)
         if res[1]:
+            print (res[1])
             raise util.exceptions.RunError(res[1].decode("UTF8"))
 
         return res[0].decode("UTF8")
