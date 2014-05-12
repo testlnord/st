@@ -41,9 +41,11 @@ CREATE TABLE IF NOT EXISTS solution
 CREATE TABLE IF NOT EXISTS run
 (
   id INTEGER PRIMARY KEY ,
+  run_name varchar(100),
   tour_id INTEGER,
   timestart DATETIME,
-  FOREIGN KEY (tour_id) REFERENCES tournament(id)
+  FOREIGN KEY (tour_id) REFERENCES tournament(id),
+  UNIQUE (run_name)
 );
 CREATE TABLE IF NOT EXISTS game
 (

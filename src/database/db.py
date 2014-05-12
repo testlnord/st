@@ -139,10 +139,10 @@ class DB:
                            "file_name": file_name})
         return result
 
-    def addRun(self, tour_id, timestart):
+    def addRun(self, tour_id,run_name, timestart):
         cur = self.conn.cursor()
-        cur.execute("INSERT INTO run(tour_id, timestart) VALUES (?, ?)",
-                    (tour_id, timestart))
+        cur.execute("INSERT INTO run(tour_id,run_name, timestart) VALUES (?, ?, ?)",
+                    (tour_id, run_name, timestart))
         self.conn.commit()
         return cur.lastrowid
 
@@ -153,8 +153,12 @@ class DB:
         self.conn.commit()
         return cur.lastrowid
 
-    def getRunResult(self, run_id):
+    def getRunResult(self,tour_name, run_name="default_run"):
         cur = self.conn.cursor()
+        run_id = cur.execute("SELECT run.id FROM run"
+                             " JOIN tournament ON run.tour_id = tournament.id"
+                             " WHERE tournament.name =? AND run.run_name = ?", (tour_name,run_name))
+
         res = cur.execute("SELECT sol_id, sum(pts) from (" +
                           "SELECT solution1 as sol_id, points1 as pts from game where run = ? " +
                           "UNION " +

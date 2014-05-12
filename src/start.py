@@ -1,6 +1,7 @@
 import config
 import util.register
 import os
+import run_runner
 
 for path in config.start_list:
     if os.path.isdir(path):
@@ -16,6 +17,7 @@ print(util.register.runners)
 print(util.register.builders)
 print(util.register.checkers)
 
+run_runner.add_cron_entry()
 
 
 with server.Server() as s:

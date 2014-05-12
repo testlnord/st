@@ -1,5 +1,5 @@
 import sys, os
-
+CUR_PATH=os.path.dirname(__file__)
 #############################
 ##     DataBase paths      ##
 #############################
@@ -38,10 +38,25 @@ sys.path.append(checker_path)
 sys.path.append(server_path)
 sys.path.append(db_path)
 
+def sys_append (path):
+    path = path[1:]
+    sys.path.append(os.path.join(CUR_PATH,path))
+
+sys_append(cpp_builder_path)
+sys_append(java_builder_path)
+sys_append(cpp_runner_path)
+sys_append(java_runner_path)
+sys_append(checker_path)
+sys_append(server_path)
+sys_append(db_path)
+
+
+
 
 
 #############################
 #    Stuff for start.py     #
 #############################
 start_list = [cpp_builder_path, java_builder_path, cpp_runner_path, java_runner_path, checker_path, db_path,server_path]
+
 

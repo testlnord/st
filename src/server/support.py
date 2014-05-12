@@ -30,8 +30,14 @@ def make_out_path(tour_id, user_id):
     res_path = os.path.join(tour_path, str(user_id))
     #adding send time mark
     res_path = os.path.join(res_path, str(time.time()))
-
     return res_path
+
+
+def make_runner (sollution,timelimit):
+     r = util.register.runners[sollution["runner_name"]](
+                    os.path.join(make_out_path(sollution["tour_id"], sollution["user_id"]), sollution["file_name"]),
+                    timelimit)
+     return r
 
 #DECORATORS
 @support("/add_user")
@@ -107,13 +113,13 @@ def add_solution (db,data,path):
 @support ("/run_tournament")
 def run_tournament (db,path):
     dict=parsePath(path)
-    run(db,dict["tournament_name"])
+    create_run(db,dict["tournament_name"],dict.get("run_name","default_run"))
     return None
 
 @support ("/get_run_result")
 def get_run_result (db,path):
     dict=parsePath(path)
-    data=db.getRunResult(dict["runid"])
+    data=db.getRunResult(dict["tour_name"],dict.get("run_name","default_run"))
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
@@ -125,34 +131,33 @@ def checkUserInTournament (db,path):
      return jsonData.encode("utf-8")
 
 
-def run(db, tour_name):
+def create_run(db, tour_name,run_name = "default_run"):
         tour_info = db.getTournament(name=tour_name)[0]
         tour_id = tour_info["id"]
 
-        run_id = db.addRun(tour_id, str(datetime.datetime.now()))
+        run_id = db.addRun(tour_id,run_name, str(datetime.datetime.now()))
         solutions = db.getSolutionsInTournament(tour_id)
+
+        # timelimit = tour_info["timelimit"]
 
 
         for sol1_num, sol1 in enumerate(solutions[:-1]):
             for sol2 in solutions[sol1_num + 1:]:
-                r1 = util.register.runners[sol1["runner_name"]](
-                    os.path.join(make_out_path(sol1["tour_id"], sol1["user_id"]), sol1["file_name"]),
-                    tour_info["timelimit"]
-                )
-                r2 = util.register.runners[sol2["runner_name"]](
-                    os.path.join(make_out_path(sol2["tour_id"], sol2["user_id"]), sol2["file_name"]),
-                    tour_info["timelimit"]
-                )
-                #first time
-                checker = util.register.checkers[tour_info["checker"]](r1, r2)
-                checker.play()
-                p1, p2 = checker.points()
-                db.addGame(run_id, sol1["id"], sol2["id"], p1, p2, checker.log())
-                #second time
-                checker = util.register.checkers[tour_info["checker"]](r2, r1)
-                checker.play()
-                p1, p2 = checker.points()
-                db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
+                db.addGame(run_id, sol2["id"], sol1["id"], 0, 0, 'NOT PLAYED')
+
+                # r1 = make_runner(sol1,timelimit)
+                # r2 = make_runner(sol2,timelimit)
+                #
+                # #first time
+                # checker = util.register.checkers[tour_info["checker"]](r1, r2)
+                # checker.play()
+                # p1, p2 = checker.points()
+                # db.addGame(run_id, sol1["id"], sol2["id"], p1, p2, checker.log())
+                # #second time
+                # checker = util.register.checkers[tour_info["checker"]](r2, r1)
+                # checker.play()
+                # p1, p2 = checker.points()
+                # db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
 
 def addBuild(db, user_name, tour_name, file, builder_name):
     result = {"ok": True, "msg": ''}
