@@ -202,7 +202,6 @@ class DB:
         res = cur.execute("SELECT id , timelimit, checker"
                     " FROM tournament"
                     " WHERE tournament.start_time < ? AND tournament.end_time > ? ", (now,now))
-
         result = []
         for (id , tl , c) in res:
             result.append({'id' : id , 'tl' : tl, 'c' : c})
