@@ -58,6 +58,12 @@ def dict (response):
       json_data=json_data[0]
     return json_data
 
+def dict_list (response):
+    json_data= response.read().decode('utf-8')
+    json_data=json.loads(json_data)
+    return json_data
+
+
 def add_user_to_tour (name,t_name):
     dict = {
         "name" : name,
@@ -89,7 +95,7 @@ def get_tournaments ():
     url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_tournaments"
     response = urllib.request.urlopen(url)
 
-    return dict(response)
+    return dict_list(response)
 
 
 def get_checkers ():

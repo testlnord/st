@@ -43,8 +43,7 @@ CREATE TABLE IF NOT EXISTS run
   id INTEGER PRIMARY KEY ,
   tour_id INTEGER,
   timestart DATETIME,
-  FOREIGN KEY (tour_id) REFERENCES tournament(id),
-  UNIQUE (run_name)
+  FOREIGN KEY (tour_id) REFERENCES tournament(id)
 );
 CREATE TABLE IF NOT EXISTS game
 (

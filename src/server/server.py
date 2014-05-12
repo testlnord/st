@@ -77,7 +77,6 @@ class Handler(BaseHTTPRequestHandler):
              tb = traceback.format_exc().encode("utf-8")
              self.wfile.write(tb)
 
-        self.wfile.write.close()
 
 
 
