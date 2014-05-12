@@ -86,8 +86,8 @@ class DB:
         result = []
         for (t_name, t_checker, t_timelimit, t_s_time, t_e_time, t_id) in res:
             result.append({"name": t_name,
-                           "checker": t_checker,
-                           "timelimit": t_timelimit,
+                           "c": t_checker,
+                           "tl": t_timelimit,
                            "start_time": t_s_time,
                            "end_time": t_e_time,
                            "id": t_id})
@@ -140,10 +140,10 @@ class DB:
                            "file_name": file_name})
         return result
 
-    def addRun(self, tour_id,run_name, timestart):
+    def addRun(self, tour_id,timestart):
         cur = self.conn.cursor()
-        cur.execute("INSERT INTO run(tour_id,run_name, timestart) VALUES (?, ?, ?)",
-                    (tour_id, run_name, timestart))
+        cur.execute("INSERT INTO run(tour_id,timestart) VALUES (?, ?)",
+                    (tour_id, timestart))
         self.conn.commit()
         return cur.lastrowid
 
@@ -172,8 +172,7 @@ class DB:
                           ") group by sol_id", (run_id, run_id))
         res = list(res)
         result = []
-        if len(res)>0:
-            (sol_id, pts) = res[0]
+        for (sol_id,pts) in res:
             result.append({"solution": sol_id, "points": pts})
 
         return result
