@@ -47,9 +47,17 @@
 
     </div>
     <div class="span9">
-    {% if results %}
-    <h5>{% trans "Tour results"%}</h5>
-        {{ results }}
+    {% if result %}
+    <h5>{% trans "Last results"%}</h5>
+
+    <ul>
+    {% for res in result %}
+    <li>
+        User {{ res.name }} got {{ res.points }} point(s).
+    </li>
+
+    {% endfor %}
+    </ul>
     {% endif %}
     </div>
 {% endblock %}

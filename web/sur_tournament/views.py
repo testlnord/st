@@ -33,6 +33,7 @@ def tour(request, id = None, template_name='tour.html', s={}):
         return HttpResponseRedirect('/') # Redirect after bad ID
 
     result = game_server.get_tour_results(cur_tour['name'])
+    print (result)
     #result = ''
 
     formSend = None

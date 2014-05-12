@@ -131,11 +131,11 @@ if __name__ == "__main__":
     # s.add_user_to_tour("Kolyan5","test")
     # s.send_solution("Kolyan5","test","cpp","/home/s/python/NIR/st/test/tictactoe/cpp/main.cpp")
 
-    # s.run_tournament("test")
+    #s.run_tournament("T1")
     # response = s.get_tournaments()
     # response = s.is_user_in_tour("Kolyan","test")
     # response = s.get_tournaments()
-    response = s.get_run_result("test")
+    response = s.get_run_result("T1")
     # response = s.getUserInfoByName("Kolyan")
     res = s.dict(response)
     print(res)

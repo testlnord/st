@@ -169,15 +169,16 @@ class DB:
         if not run_id:
             return []
         run_id = run_id[0][0]
-        res = cur.execute("SELECT sol_id, sum(pts) from (" +
+        res = cur.execute("SELECT user.name, sum(pts) from (" +
                           "SELECT solution1 as sol_id, points1 as pts from game where run = ? " +
                           "UNION " +
                           "SELECT solution2 as sol_id, points2 as pts from game where run = ?" +
-                          ") group by sol_id", (run_id, run_id))
+                          ") inner join solution on sol_id = solution.id inner join user on user_id = user.id group by user.name ", (run_id, run_id))
         res = list(res)
+        print (res)
         result = []
-        for (sol_id,pts) in res:
-            result.append({"solution": sol_id, "points": pts})
+        for (name, pts) in res:
+            result.append({"name": name, "points": pts})
 
         return result
 
