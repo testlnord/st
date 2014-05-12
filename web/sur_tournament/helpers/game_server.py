@@ -1,6 +1,7 @@
 import json
 import stserver_config
 import urllib
+from django.utils.http import urlquote
 
 def addUser ( name, email):
     dict = {
@@ -101,3 +102,8 @@ def get_builders ():
     response = urllib.request.urlopen(url)
     return dict(response)
 
+
+def get_tour_results(tour):
+    url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_run_result?tour_name="+urlquote(str(tour))
+    response = urllib.request.urlopen(url)
+    return dict(response)

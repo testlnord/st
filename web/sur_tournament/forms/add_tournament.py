@@ -12,4 +12,4 @@ class AddTournamentForm(forms.Form):
         super(AddTournamentForm, self).__init__(*args, **kwargs)
         if checkers:
             self.fields['checker'].choices = [(x,x) for x in checkers]
-        self.fields['end_time'].widget = DatepickerInput()
+        #self.fields['end_time'].widget = DatepickerInput()

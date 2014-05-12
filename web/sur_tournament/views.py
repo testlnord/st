@@ -32,6 +32,9 @@ def tour(request, id = None, template_name='tour.html', s={}):
     if cur_tour is None:
         return HttpResponseRedirect('/') # Redirect after bad ID
 
+    result = game_server.get_tour_results(cur_tour['name'])
+    #result = ''
+
     formSend = None
     formReg = None
     if request.user.is_authenticated():
@@ -48,7 +51,8 @@ def tour(request, id = None, template_name='tour.html', s={}):
                                               form_data['type'], request.FILES['solution'])
                     return render(request,
                                   template_name,
-                                  {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg, 'status': status}
+                                  {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg, 'status': status,
+                                   'result': result}
                     )
                     #return HttpResponseRedirect('/tour/%d'%id, s=status) # Redirect after POST
             else:
@@ -63,7 +67,8 @@ def tour(request, id = None, template_name='tour.html', s={}):
             else:
                 formReg = forms.tournament.RegUser(username, cur_tour['name'])
 
-    return render(request, template_name, {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg, 'status': s})
+    return render(request, template_name, {'tour':cur_tour, 'formSend': formSend, 'formReg': formReg, 'status': s,
+                                           'result': result})
 
 
 def users(request, name = None, template_name = 'users.html'):

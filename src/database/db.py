@@ -156,17 +156,21 @@ class DB:
 
     def getRunResult(self,tour_name):
         cur = self.conn.cursor()
+        print (tour_name)
         run_id = cur.execute("SELECT run.id FROM run"
                              " JOIN tournament ON run.tour_id = tournament.id"
-                             " WHERE tournament.name =?"
+                             " WHERE tournament.name = ?"
                              " ORDER BY run.timestart DESC", (tour_name, ))
-
+        run_id= list(run_id)
+        if not run_id:
+            return []
+        run_id = run_id[0][0]
         res = cur.execute("SELECT sol_id, sum(pts) from (" +
                           "SELECT solution1 as sol_id, points1 as pts from game where run = ? " +
                           "UNION " +
                           "SELECT solution2 as sol_id, points2 as pts from game where run = ?" +
                           ") group by sol_id", (run_id, run_id))
-
+        res = list(res)
         result = []
         if len(res)>0:
             (sol_id, pts) = res[0]

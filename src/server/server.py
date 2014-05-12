@@ -34,12 +34,21 @@ class Handler(BaseHTTPRequestHandler):
             if data is not None:
                 self.wfile.write(data)
 
-        except:
-            self.send_response(400)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
+        except Exception as e:
+             print(e)
 
-        self.wfile.close()
+             print (e.with_traceback(e.__traceback__))
+             self.send_response(400)
+             self.send_header('content-type', "application/json")
+             self.end_headers()
+             tb = traceback.format_exc().encode("utf-8")
+             self.wfile.write(tb)
+        #except:
+        #    self.send_response(400)
+        #    self.send_header("Content-type", "application/json")
+        #    self.end_headers()
+
+        #self.wfile.close()
 
     def do_POST(self):
 
@@ -58,7 +67,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(data)
 
 
-        except :
+        except Exception as e:
              print(e)
 
              print (e.with_traceback(e.__traceback__))
