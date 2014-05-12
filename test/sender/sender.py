@@ -11,6 +11,17 @@ class Sender:
         self.host = host
         self.port = port
 
+    def run_active_tour (self):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/run_active_tours"
+        response = urllib.request.urlopen(url)
+        return  response
+
+    def get_run_result (self,tour_name):
+        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_run_result?tour_name="+str(tour_name)
+        response = urllib.request.urlopen(url)
+        return response
+
+
 
     def sendUserInfo (self, name, email):
         dict = {
@@ -47,6 +58,8 @@ class Sender:
         response = urllib.request.urlopen(url)
         return response
 
+
+
     def is_user_in_tour (self,name,t_name):
         url = 'http://'+str(self.host)+':'+str(self.port)\
               +"/check_user_in_tour?name="+name+','+\
@@ -54,10 +67,6 @@ class Sender:
         response = urllib.request.urlopen(url)
         return response
 
-    def get_run_result (self,runid):
-        url = 'http://'+str(self.host)+':'+str(self.port)+"/get_run_result?runid="+str(runid)
-        response = urllib.request.urlopen(url)
-        return response
 
     def run_tournament (self,t_name):
         url = 'http://'+str(self.host)+':'+str(self.port)+"/run_tournament?tournament_name="+t_name

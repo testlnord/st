@@ -4,6 +4,7 @@ import json
 
 __author__ = 's'
 import sqlite3 as lite
+import datetime
 import sys
 
 
@@ -153,11 +154,12 @@ class DB:
         self.conn.commit()
         return cur.lastrowid
 
-    def getRunResult(self,tour_name, run_name="default_run"):
+    def getRunResult(self,tour_name):
         cur = self.conn.cursor()
         run_id = cur.execute("SELECT run.id FROM run"
                              " JOIN tournament ON run.tour_id = tournament.id"
-                             " WHERE tournament.name =? AND run.run_name = ?", (tour_name,run_name))
+                             " WHERE tournament.name =?"
+                             " ORDER BY run.timestart DESC", (tour_name, ))
 
         res = cur.execute("SELECT sol_id, sum(pts) from (" +
                           "SELECT solution1 as sol_id, points1 as pts from game where run = ? " +
@@ -183,3 +185,18 @@ class DB:
         if not res:
             return []
         return self.getRunResult(res[0][1])
+
+    def get_active_tours (self):
+        cur = self.conn.cursor()
+        now = datetime.datetime.now()
+        res = cur.execute("SELECT id , timelimit, checker"
+                    " FROM tournament"
+                    " WHERE tournament.start_time < ? AND tournament.end_time > ? ", (now,now))
+
+        result = []
+        for (id , tl , c) in res:
+            result.append({'id' : id , 'tl' : tl, 'c' : c})
+
+        return result
+
+

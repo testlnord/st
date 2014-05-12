@@ -118,10 +118,14 @@ def run_tournament (db,path):
 
 @support ("/get_run_result")
 def get_run_result (db,path):
-    dict=parsePath(path)
-    data=db.getRunResult(dict["tour_name"],dict.get("run_name","default_run"))
+    dict = parsePath(path)
+    data = db.getRunResult(dict["tour_name"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
+
+
+
+
 
 @support("/check_user_in_tour")
 def checkUserInTournament (db,path):
@@ -131,33 +135,49 @@ def checkUserInTournament (db,path):
      return jsonData.encode("utf-8")
 
 
-def create_run(db, tour_name,run_name = "default_run"):
+@support ("/run_active_tours")
+def run_active_tours (db,path):
+    tinfos = db.get_active_tours()
+    for t in tinfos:
+        run_by_tinfo(db,t)
+
+def run_by_tinfo (db,tinfo):
+     tid = tinfo["id"]
+     timelimit = tinfo["tl"]
+     run_id = db.addRun(tid, str(datetime.datetime.now()))
+     solutions = db.getSolutionsInTournament()
+
+     for sol1_num, sol1 in enumerate(solutions[:-1]):
+            for sol2 in solutions[sol1_num + 1:]:
+                r1 = make_runner(sol1,timelimit)
+                r2 = make_runner(sol2,timelimit)
+
+                #first time
+                checker = util.register.checkers[tinfo["c"]](r1, r2)
+                checker.play()
+                p1, p2 = checker.points()
+                db.addGame(run_id, sol1["id"], sol2["id"], p1, p2, checker.log())
+                #second time
+                checker = util.register.checkers[tinfo["c"]](r2, r1)
+                checker.play()
+                p1, p2 = checker.points()
+                db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
+
+
+
+
+def create_run(db, tour_name):
         tour_info = db.getTournament(name=tour_name)[0]
         tour_id = tour_info["id"]
 
-        run_id = db.addRun(tour_id,run_name, str(datetime.datetime.now()))
+        run_id = db.addRun(tour_id,str(datetime.datetime.now()))
         solutions = db.getSolutionsInTournament(tour_id)
-
-        # timelimit = tour_info["timelimit"]
-
 
         for sol1_num, sol1 in enumerate(solutions[:-1]):
             for sol2 in solutions[sol1_num + 1:]:
                 db.addGame(run_id, sol2["id"], sol1["id"], 0, 0, 'NOT PLAYED')
 
-                # r1 = make_runner(sol1,timelimit)
-                # r2 = make_runner(sol2,timelimit)
-                #
-                # #first time
-                # checker = util.register.checkers[tour_info["checker"]](r1, r2)
-                # checker.play()
-                # p1, p2 = checker.points()
-                # db.addGame(run_id, sol1["id"], sol2["id"], p1, p2, checker.log())
-                # #second time
-                # checker = util.register.checkers[tour_info["checker"]](r2, r1)
-                # checker.play()
-                # p1, p2 = checker.points()
-                # db.addGame(run_id, sol2["id"], sol1["id"], p1, p2, checker.log())
+
 
 def addBuild(db, user_name, tour_name, file, builder_name):
     result = {"ok": True, "msg": ''}
