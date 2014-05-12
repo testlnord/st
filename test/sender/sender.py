@@ -76,8 +76,8 @@ class Sender:
     def dict (self,response):
         json_data= response.read().decode('utf-8')
         json_data=json.loads(json_data)
-        if len(json_data)==1:
-          json_data=json_data[0]
+        # if len(json_data)==1:
+        #   json_data=json_data[0]
         return json_data
 
     def add_user_to_tour (self,name,t_name):
@@ -126,8 +126,8 @@ class Sender:
 
 if __name__ == "__main__":
     s=Sender('127.0.0.1',8080)
-    response=s.sendUserInfo("Kolyan5","kolyan@ya.ru")
-    # s.sendCreateTournament("test","tictactoe",10,123123,123124123)
+    # response=s.sendUserInfo("Kolyan5","kolyan@ya.ru")
+    s.sendCreateTournament("test","tictactoe",10,123123,123124123)
     # s.add_user_to_tour("Kolyan","test")
     # s.send_solution("Kolyan","test","cpp","/home/s/PycharmProjects/st/test/tictactoe/cpp/main.cpp")
 
@@ -136,8 +136,8 @@ if __name__ == "__main__":
     # response = s.is_user_in_tour("Kolyan","test")
     # response = s.get_tournaments()
     # response = s.getUserInfoByName("Kolyan")
-    res = s.dict(response)
-    print(response.getcode())
+    # res = s.dict(response)
+    # print(response.getcode())
 
 
 
