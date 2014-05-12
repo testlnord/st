@@ -96,8 +96,9 @@ def add_cron_entry():
     script = os.path.abspath(__file__)
     python = sys.executable
     logging = " >> /tmp/surreal_tournament.log"
+    errlog = " 2> /tmp/st_err"
 
-    command ="cd %s && "%CUR_PATH + python +" run_runner.py"+logging
+    command ="cd %s && "%CUR_PATH + python +" run_runner.py"+logging + errlog
 
     cur_cron = os.popen('crontab -l > current_crontab.txt')
     cur_cron.read()
@@ -118,7 +119,7 @@ def add_cron_entry():
 
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     now = datetime.datetime.now()
     print("run runner has been run at  %s" %now)
     runner = Run_runner()
