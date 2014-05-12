@@ -166,8 +166,10 @@ class DB:
                           "UNION " +
                           "SELECT solution2 as sol_id, points2 as pts from game where run = ?" +
                           ") group by sol_id", (run_id, run_id))
+
         result = []
-        for (sol_id, pts) in res:
+        if len(res)>0:
+            (sol_id, pts) = res[0]
             result.append({"solution": sol_id, "points": pts})
 
         return result
