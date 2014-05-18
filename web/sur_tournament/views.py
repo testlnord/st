@@ -76,8 +76,14 @@ def users(request, name = None, template_name = 'users.html'):
     if name is None:
         return HttpResponseRedirect('/add_tour/') # Redirect after none ID
 
-    user_info = game_server.getUserInfoByName(name)
+    all_user_info = game_server.getUserInfoByName(name)
+    verbose = False
+    if request.user.is_authenticated() and request.user == all_user_info["name"]:
+        verbose = True
     #todo check for illegal user
+    user_info = {"name": all_user_info["name"]}
+    user_info["email"] = all_user_info["email"]
+
 
     return render(request, template_name, {'user_info': user_info})
 

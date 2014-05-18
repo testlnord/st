@@ -1,4 +1,5 @@
 #server decorator
+from lib2to3.patcomp import _type_of_literal
 import os
 import db
 import util.register
@@ -195,12 +196,12 @@ def addBuild(db, user_name, tour_name, file, builder_name):
     print(o_path)
     builder = util.register.builders[builder_name]
     src_path = os.path.join(o_path, builder.def_src_name)
-    with open(src_path, "w") as src_file:
+
+    fileparams = 'w'
+    if type(file) == bytes:
+        fileparams+='b'
+    with open(src_path, fileparams) as src_file:
         src_file.write(file)
-        #b = file.read(1).decode('utf-8')
-        #while b != "":
-        #    src_file.write(b)
-        #    b = file.read(1).decode('utf-8')
     b_stat = 0
     o_file = ""
     try:

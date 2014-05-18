@@ -1,7 +1,55 @@
 {% extends "base.html" %}
 {% load i18n %}
-
 {% block content %}
 
-   {{ user_info }}
+
+   {{ user_info.name }}<br>
+   {% if user_info.email %}
+   {{ user_info.email }} <br>
+   {% endif %}
+    <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#oldTours">
+                Closed tournaments
+                </a>
+            </h4>
+        </div>
+        <div id="oldTours" class="panel-collapse collapse">
+        <div class="panel-body" style="padding-left: 20px">
+            <div class="panel-group" id="accordion2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#oldTours1">
+                            Closed tournaments1
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="oldTours1" class="panel-collapse collapse">
+                        a;lksdf;askndflkansdf;lnaksdf
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#curTours">
+              Current tournaments
+            </a>
+          </h4>
+        </div>
+        <div id="curTours" class="panel-collapse collapse in">
+          <div class="panel-body">
+            info on current tours
+          </div>
+        </div>
+    </div>
+    </div>
+
 {% endblock %}

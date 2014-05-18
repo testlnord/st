@@ -58,7 +58,15 @@ class Handler(BaseHTTPRequestHandler):
         length = int(self.headers.get('content-length'))
 
         try:
-            data = self.rfile.read(length).decode('utf-8')
+            data = self.rfile.read(length)
+            try:
+                decoded_data = data.decode('utf-8')
+                data = decoded_data
+            except UnicodeDecodeError:
+                #if can't decode then read it as binary data
+                #so ignore error
+                pass
+
             key = self.get_key_from_addres(self.path)
             data = supportedHandlers[key](self.db, data, self.path)
             self.send_response(200)
@@ -71,7 +79,7 @@ class Handler(BaseHTTPRequestHandler):
 
         except Exception as e:
              print(e)
-
+             print("================================================================================")
              print (e.with_traceback(e.__traceback__))
              self.send_response(400)
              self.send_header('content-type', "application/json")

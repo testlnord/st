@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="{% static "js/jquery.js" %}"></script>
-
+    <script src="{% static "js/bootstrap.js" %}"></script>
     <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
     <style type="text/css">
       body {
@@ -72,9 +72,12 @@
             <ul class="nav">
               <li class="active"><a href="/">Home</a></li>
               {% if user.is_authenticated %}
-                <li><a href="add_tour">Add tournament</a></li>
+                <li><a href="/add_tour">Add tournament</a></li>
               {% endif %}
-              <li><a href="contact">Contact</a></li>
+              <li><a href="/contact">Contact</a></li>
+              {% if user.is_authenticated %}
+                <li><a href="/users/{{ user }}">User page</a></li>
+              {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div>

@@ -34,3 +34,4 @@ class Runner:
         return res[0].decode("UTF8")
 
 util.register.runners["cpp"] = Runner
+util.register.runners["makefile"] = Runner
