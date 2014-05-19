@@ -3,12 +3,15 @@
 {% block content %}
 
 
-   {{ user_info.name }}<br>
-   {% if user_info.email %}
-   {{ user_info.email }} <br>
-   {% endif %}
-   {% if tour_info %}
+   <div style="text-align: center"><h3>{{ user_info.name }}</h3>
+       {% if user_info.email %}
+       <p>{{ user_info.email }}</p>
+       {% endif %}
+   </div>
+
+   {% if tour_info or old_tour_info%}
     <div class="panel-group" id="accordion">
+    {% if old_tour_info %}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
@@ -37,6 +40,8 @@
         </div>
         </div>
     </div>
+    {% endif %}
+    {% if tour_info %}
     <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -65,7 +70,9 @@
                         End date: {{ tour.end_time }}<br>
                         {% if tour.runs %}
                             Results: <br>
-                            <div style="height: 100px;overflow: scroll">
+                            <div style="background-color: #FFFFFF; border-color: #DDDDDD;  border-radius: 4px 4px 4px 4px;
+                            border-style:solid; border-width: 1px; box-shadow: none; margin-left: 0; margin-right: 0;
+                            height: 100px; overflow-y: scroll">
                             {% for r in tour.runs %}
                                 YOU {{ r.3 }} - {{ r.4 }} <a href="/users/{{ r.2 }}">{{ r.2 }}</a><br>
                             {% endfor %}
@@ -79,6 +86,7 @@
           </div>
         </div>
     </div>
+    {% endif %}
     </div>
     {% endif %}
 {% endblock %}

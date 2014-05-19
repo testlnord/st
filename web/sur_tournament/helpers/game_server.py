@@ -18,14 +18,20 @@ def make_request (dictionary):
     poll = zmq.Poller()
     poll.register(socket, zmq.POLLIN)
     socket.send_json(jsonData)
-    for i in range(5):
-        sockets = dict(poll.poll(1000))
-        if socket in sockets:
-          msg = socket.recv_json()
-          break
+    msg = None
+    #for i in range(10):
+    #    sockets = dict(poll.poll(1000))
+    #    if socket in sockets:
+    #      print("socked recived")
+    #      msg = socket.recv_json()
+    #      break
+    msg = socket.recv_json()
     socket.close()
     context.term()
-    return msg[0]
+    print(msg)
+    if not msg:
+        return {}
+    return msg
 
 
 
@@ -80,7 +86,7 @@ def getUserInfoByName (name):
     # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_user_info?name="+name
     # response = urllib.request.urlopen(url)
     # return dict(response)
-    return make_request(dict)
+    return make_request(dict)[0]
 
 def get_run_result (runid):
     dict = {
@@ -115,11 +121,12 @@ def run_tournament (t_name):
 
 
 def dict (response):
-    json_data= response.read().decode('utf-8')
-    json_data=json.loads(json_data)
-    if len(json_data)==1:
-      json_data=json_data[0]
-    return json_data
+    return response
+    #json_data= response.read().decode('utf-8')
+    #json_data=json.loads(json_data)
+    #if len(json_data)==1:
+    #  json_data=json_data[0]
+    #return json_data
 
 def dict_list (response):
     json_data= response.read().decode('utf-8')

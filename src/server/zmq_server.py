@@ -38,7 +38,7 @@ class ClientTask(threading.Thread):
         while True:
             reqs = reqs + 1
             print('Req #%d sent..' % (reqs))
-            socket.send_string(u'request #%d' % (reqs))
+            socket.send_string('request #%d' % (reqs))
             for i in range(5):
                 sockets = dict(poll.poll(1000))
                 if socket in sockets:

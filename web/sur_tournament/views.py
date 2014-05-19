@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response
 
 # Create your views here.
 from django.template import RequestContext
+import time
 from helpers import game_server
 import forms.add_tournament
 import forms.tournament
@@ -85,10 +86,18 @@ def users(request, name = None, template_name = 'users.html'):
     if verbose:
         user_info["email"] = all_user_info["email"]
     tour_info = None
+    old_tours = []
+    cur_tours = []
     if verbose:
         tour_info = game_server.get_user_tour_info(all_user_info["name"])
+        for info in tour_info:
+            if time.strptime(info["end_time"], "%Y-%m-%d %H:%M:%S 00:00") < time.localtime():
+                old_tours.append(info)
+            else:
+                cur_tours.append(info)
 
-    return render(request, template_name, {'user_info': user_info, 'tour_info': tour_info})
+
+    return render(request, template_name, {'user_info': user_info, 'old_tour_info': old_tours, 'tour_info': cur_tours})
 
 def add_tour(request, template_name='a_tour.html'):
     if not request.user.is_authenticated():
