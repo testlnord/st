@@ -1,4 +1,5 @@
 #server decorator
+import base64
 from lib2to3.patcomp import _type_of_literal
 import os
 import db
@@ -112,7 +113,8 @@ def add_solution(db, dict):
    name = dict["name"]
    t_name = dict["tournament_name"]
    type = dict["type"]
-   return jsonify(addBuild(db, name, t_name, dict["file"], type))
+   file = base64.b64decode(bytes(dict["file"], 'utf-8'))
+   return jsonify(addBuild(db, name, t_name, file, type))
 
 
 @support("run_tournament")

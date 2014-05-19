@@ -4,7 +4,7 @@ import urllib
 from django.utils.http import urlquote
 import time
 import zmq
-
+import base64
 
 
 def make_request (dictionary):
@@ -155,8 +155,8 @@ def send_solution (user_name,tournament_name,type,file):
         "key" : "send_solution",
         "name" : user_name,
         "tournament_name" : tournament_name,
-        "type=" : type,
-        "file=" : file.read()
+        "type" : type,
+        "file" : base64.b64encode(file.read()).decode('utf-8')
         }
     # args="name="+user_name
     # args+=","
@@ -165,7 +165,7 @@ def send_solution (user_name,tournament_name,type,file):
     # args+="type="+type
     # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/send_solution?"+args
     #
-    # post_data = file.read()
+    # post_data = file.read()send
     # req=urllib.request.Request(url,post_data)
     # response = urllib.request.urlopen(req)
     # return dict(response)
