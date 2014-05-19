@@ -3,8 +3,11 @@
 #idea dirs
 .idea/
 src/.idea/
+#out files 
+out/
 #data bases
 *.db
+*.sqlite3
 # C extensions
 *.so
 *.out
