@@ -91,6 +91,10 @@ class ServerWorker(threading.Thread):
         threading.Thread.__init__ (self)
         self.context = context
 
+    def jsonify(self,data):
+        jsonData = json.dumps(data)
+        return jsonData.encode("utf-8")
+
     def run(self):
         self.db = db.DB()
         worker = self.context.socket(zmq.DEALER)
@@ -101,6 +105,8 @@ class ServerWorker(threading.Thread):
             json_dict = json.loads(msg.decode("utf-8"))
             json_dict=ast.literal_eval(json_dict)
             data = supportedHandlers[json_dict["key"]](self.db, json_dict)
+            if data is None:
+                data = self.jsonify({"ok":"ok"})
             worker.send_multipart([ident, data])
         worker.close()
 
