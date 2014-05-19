@@ -210,3 +210,61 @@ class DB:
         return result
 
 
+    def getUserTours(self, user_name):
+        user_info = self.getUser(name=user_name)
+        if not user_info:
+            return []
+        user_info = user_info[0]
+
+        cur = self.conn.cursor()
+        tours_res = cur.execute("select name, checker, start_time, end_time, id from tournament "
+                              " inner join participants on tour_id = id "
+                              "  where user_id = ?", (user_info["id"], ))
+        if not tours_res:
+            return []
+        tours = []
+
+        for (name, checker, st, et, id)  in tours_res:
+            tour_info = {"id": id, "name": name, "checker": checker,
+                         "start_time":st, "end_time":et}
+
+            run_cur = self.conn.cursor()
+            run_id = run_cur.execute("SELECT id FROM run"
+                             " WHERE run.tour_id= ?"
+                             " ORDER BY run.timestart DESC", (id, ))
+            if run_id:
+                tour_info["run_id"] = next(run_id)[0]
+                pts_cur = self.conn.cursor()
+                pts = pts_cur.execute("Select sum(points1) + sum(points2) from game inner join "
+                                      " solution as s on s.id = game.solution1 or s.id = game.solution2 "
+                                      " where game.run = ? and s.user_id = ?", (tour_info["run_id"], user_info["id"]))
+                if pts:
+                    tour_info["pts"] = next(pts)[0]
+                    pts_cur = self.conn.cursor()
+                    runs = pts_cur.execute("select run.id, game.id, enemy, points1, points2 from run "
+                                           "inner join game on game.run = run.id "
+                                           "inner join solution as s on s.id = game.solution1 "
+                                           "inner join (select user.name as enemy, solution.id as enemid "
+                                           "from user inner join "
+                                           "solution on user_id = user.id ) on enemid = solution2 "
+                                           "where s.user_id = ? and run.tour_id = ? "
+                                           "UNION ALL "
+                                           "select run.id, game.id, enemy, points2, points1 from run "
+                                           "inner join game on game.run = run.id "
+                                           "inner join solution as s on s.id = game.solution2 "
+                                           "inner join (select user.name as enemy, solution.id as enemid "
+                                           "from user inner join "
+                                           "solution on user_id = user.id ) on enemid = solution1 "
+                                           "where s.user_id = ? and run.tour_id = ? ",
+                                           (user_info["id"], id, user_info["id"], id))
+                    tour_info["runs"] = []
+                    for r in runs:
+                        tour_info["runs"].append(r)
+
+            else:
+                tour_info["run_id"] = None
+
+            tours.append(tour_info)
+
+
+        return tours

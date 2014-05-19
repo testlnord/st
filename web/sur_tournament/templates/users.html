@@ -7,6 +7,7 @@
    {% if user_info.email %}
    {{ user_info.email }} <br>
    {% endif %}
+   {% if tour_info %}
     <div class="panel-group" id="accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -45,11 +46,39 @@
           </h4>
         </div>
         <div id="curTours" class="panel-collapse collapse in">
-          <div class="panel-body">
-            info on current tours
+          <div class="panel-body" style="padding-left: 20px">
+            <div class="panel-group" id="accordion3">
+                {% for tour in tour_info %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion3" href="#curTours{{ tour.id }}">
+                            {{ tour.name }}
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="curTours{{ tour.id }}" class="panel-collapse collapse">
+                        {% if tour.pts  %}
+                            Score: {{ tour.pts }}<br>
+                        {% endif %}
+                        Start date: {{ tour.start_time }}<br>
+                        End date: {{ tour.end_time }}<br>
+                        {% if tour.runs %}
+                            Results: <br>
+                            <div style="height: 100px;overflow: scroll">
+                            {% for r in tour.runs %}
+                                YOU {{ r.3 }} - {{ r.4 }} <a href="/users/{{ r.2 }}">{{ r.2 }}</a><br>
+                            {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
           </div>
         </div>
     </div>
     </div>
-
+    {% endif %}
 {% endblock %}

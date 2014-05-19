@@ -131,7 +131,12 @@ def get_run_result (db,path):
     return jsonData.encode("utf-8")
 
 
-
+@support ("/get_user_tour_info")
+def get_run_result (db,path):
+    dict = parsePath(path)
+    data = db.getUserTours(dict["user_name"])
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
 
 
 @support("/check_user_in_tour")

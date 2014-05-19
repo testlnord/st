@@ -42,9 +42,15 @@ def getUserInfoByName (name):
     return dict(response)
 
 def get_run_result (runid):
-    url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_run_result?runid=5"
+    url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_run_result?runid="+str(runid)
     response = urllib.request.urlopen(url)
     return response
+
+def get_user_tour_info (user_name):
+    url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_user_tour_info?user_name="+user_name
+    response = urllib.request.urlopen(url)
+    return dict_list(response)
+
 
 def run_tournament (t_name):
     url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/run_tournament?tournament_name="+t_name
