@@ -4,6 +4,8 @@ import sys
 import config
 import urllib.parse
 import urllib.request
+import time
+import zmq
 
 
 import util.register
@@ -23,6 +25,26 @@ for path in config.start_list:
 class Run_runner:
     def __init__(self):
         self.db = db.DB()
+
+    def make_request (self,dictionary):
+        id = int(time.time()*1000)
+        jsonData = json.dumps(dictionary)
+        context = zmq.Context()
+        socket = context.socket(zmq.DEALER)
+        identity = 'client-%d' % id
+        socket.identity = identity.encode('utf-8')
+        socket.connect('tcp://localhost:8080')
+        poll = zmq.Poller()
+        poll.register(socket, zmq.POLLIN)
+        socket.send_json(jsonData)
+        msg = None
+        msg = socket.recv_json()
+        socket.close()
+        context.term()
+        if not msg:
+         return {}
+        return msg
+
 
 
     def play_game(self, game):
@@ -84,9 +106,13 @@ class Run_runner:
             self.play_game(game)
 
     def run_active_tours(self):
-         url = 'http://'+str(config.serverHost)+':'+str(config.serverPort)+"/run_active_tours"
-         response = urllib.request.urlopen(url)
-         return  response
+        diction = {
+            "key" : "run_active_tours"
+        }
+        self.make_request(diction)
+         # url = 'http://'+str(config.serverHost)+':'+str(config.serverPort)+"/run_active_tours"
+         # response = urllib.request.urlopen(url)
+         # return  response
 
 def add_cron_entry():
     shabang = "#!/bin/bash"

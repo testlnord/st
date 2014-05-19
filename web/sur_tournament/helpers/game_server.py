@@ -19,12 +19,6 @@ def make_request (dictionary):
     poll.register(socket, zmq.POLLIN)
     socket.send_json(jsonData)
     msg = None
-    #for i in range(10):
-    #    sockets = dict(poll.poll(1000))
-    #    if socket in sockets:
-    #      print("socked recived")
-    #      msg = socket.recv_json()
-    #      break
     msg = socket.recv_json()
     socket.close()
     context.term()
@@ -41,11 +35,6 @@ def addUser ( name, email):
         "name" : name,
         "email" :email
         }
-    # jsonData = json.dumps(dict)
-    # post_data = jsonData.encode("utf-8")
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/add_user"
-    # req = urllib.request.Request(url,post_data)
-    # response = urllib.request.urlopen(req)
     return make_request(dict)
 
 
@@ -56,11 +45,6 @@ def is_user_in_tour (name,t_name):
         "t_name" :t_name
         }
     return make_request(dict)
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)\
-    #       +"/check_user_in_tour?name="+name+','+\
-    #       't_name='+t_name
-    # response = urllib.request.urlopen(url)
-    # return dict(response)
 
 def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
     dict = {
@@ -72,20 +56,12 @@ def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
         "end_time" : str(end_time)
         }
     return make_request(dict)
-    # jsonData = json.dumps(dict)
-    # post_data = jsonData.encode("utf-8")
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/create_tournament"
-    # req = urllib.request.Request(url,post_data)
-    # response = urllib.request.urlopen(req)
 
 def getUserInfoByName (name):
     dict = {
         "key" : "get_user_info",
         "name" : name
     }
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_user_info?name="+name
-    # response = urllib.request.urlopen(url)
-    # return dict(response)
     return make_request(dict)[0]
 
 def get_run_result (runid):
@@ -93,9 +69,6 @@ def get_run_result (runid):
         "key" : "get_run_result",
         "runid" : runid
     }
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_run_result?runid="+str(runid)
-    # response = urllib.request.urlopen(url)
-    # return response
     return make_request(dict)
 
 def get_user_tour_info (user_name):
@@ -103,9 +76,6 @@ def get_user_tour_info (user_name):
         "key" : "get_user_tour_info",
         "user_name" : user_name
     }
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_user_tour_info?user_name="+user_name
-    # response = urllib.request.urlopen(url)
-    # return dict_list(response)
     return make_request(dict)
 
 
@@ -114,19 +84,11 @@ def run_tournament (t_name):
         "key" : "run_tournament",
         "tournament_name" : t_name
     }
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/run_tournament?tournament_name="+t_name
-    # response = urllib.request.urlopen(url)
-    # return response
     return make_request(dict)
 
 
 def dict (response):
     return response
-    #json_data= response.read().decode('utf-8')
-    #json_data=json.loads(json_data)
-    #if len(json_data)==1:
-    #  json_data=json_data[0]
-    #return json_data
 
 def dict_list (response):
     json_data= response.read().decode('utf-8')
@@ -140,11 +102,6 @@ def add_user_to_tour (name,t_name):
         "name" : name,
         "tournament_name" : t_name
         }
-    # jsonData = json.dumps(dict)
-    # post_data = jsonData.encode("utf-8")
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/add_participant"
-    # req = urllib.request.Request(url,post_data)
-    # response = urllib.request.urlopen(req)
     return make_request(dict)
 
 
@@ -158,27 +115,12 @@ def send_solution (user_name,tournament_name,type,file):
         "type" : type,
         "file" : base64.b64encode(file.read()).decode('utf-8')
         }
-    # args="name="+user_name
-    # args+=","
-    # args+="tournament_name="+tournament_name
-    # args+=","
-    # args+="type="+type
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/send_solution?"+args
-    #
-    # post_data = file.read()send
-    # req=urllib.request.Request(url,post_data)
-    # response = urllib.request.urlopen(req)
-    # return dict(response)
      return make_request(dict)
 
 def get_tournaments ():
     dict = {
         "key" : "get_tournaments"
         }
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_tournaments"
-    # response = urllib.request.urlopen(url)
-    #
-    # return dict_list(response)
     return make_request(dict)
 
 def get_checkers ():
@@ -186,9 +128,6 @@ def get_checkers ():
         "key" : "get_checkers"
         }
     return make_request(dict)
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_checkers"
-    # response = urllib.request.urlopen(url)
-    # return dict(response)
 
 
 def get_builders ():
@@ -196,9 +135,6 @@ def get_builders ():
         "key" : "get_builders"
         }
     return make_request(dict)
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_builders"
-    # response = urllib.request.urlopen(url)
-    # return dict(response)
 
 
 def get_tour_results(tour):
@@ -207,6 +143,3 @@ def get_tour_results(tour):
         "tour_name" : tour
         }
     return make_request(dict)
-    # url = 'http://'+str(stserver_config.host)+':'+str(stserver_config.port)+"/get_run_result?tour_name="+urlquote(str(tour))
-    # response = urllib.request.urlopen(url)
-    # return dict(response)
