@@ -43,21 +43,20 @@ def make_runner(sollution, timelimit):
 
 
 #DECORATORS
-@support("/add_user")
-def addUser(db, data, path):
+@support("add_user")
+def addUser(db, data):
     data = get_dict_from_json_data(data)
     name = data["name"]
     email = data["email"]
 
-    # try:
     db.addUser(name, email)
     dict = ["user " + name + " added"]
     return jsonify(dict)
 
 
-@support("/get_user_info")
-def getUserInfo(db, path):
-    dict = parsePath(path)
+@support("get_user_info")
+def getUserInfo(db, data):
+    dict = get_dict_from_json_data(data)
 
     if "id" in dict:
         data = db.getUser(dict["id"])
@@ -66,31 +65,30 @@ def getUserInfo(db, path):
     return jsonify(data)
 
 
-@support("/get_tournaments")
-def get_tournaments(db, path):
+@support("get_tournaments")
+def get_tournaments(db, data):
     data = db.getTournament()
     return jsonify(data)
 
 
-@support("/get_checkers")
-def get_checkers(db, path):
+@support("get_checkers")
+def get_checkers(db, data):
     data = list(util.register.checkers.keys())
     print(data)
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
-@support("/get_builders")
-def get_builders(db, path):
+@support("get_builders")
+def get_builders(db, data):
     data = list(util.register.builders.keys())
     print(data)
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
-@support("/create_tournament")
-def addTournament(db, data, path):
-    data = get_dict_from_json_data(data)
+@support("create_tournament")
+def addTournament(db, data):
     name = data["name"]
     checker = data["checker"]
     timelimit = data["timelimit"]
@@ -99,8 +97,8 @@ def addTournament(db, data, path):
     db.addTournament(name, checker, timelimit, start_time, end_time)
 
 
-@support("/add_participant")
-def add_participant(db, data, path):
+@support("add_participant")
+def add_participant(db, data):
     data = get_dict_from_json_data(data)
     if not data:
         return
@@ -109,51 +107,49 @@ def add_participant(db, data, path):
     db.addParticipantByNames(t_name, name)
 
 
-@support("/send_solution")
-def add_solution(db, data, path):
-    dict = parsePath(path)
-    name = dict["name"]
-    t_name = dict["tournament_name"]
-    type = dict["type"]
-    return jsonify(addBuild(db, name, t_name, data, type))
+@support("send_solution")
+def add_solution(db, dict):
+   name = dict["name"]
+   t_name = dict["tournament_name"]
+   type = dict["type"]
+   return jsonify(addBuild(db, name, t_name, dict["file"], type))
 
 
-@support("/run_tournament")
-def run_tournament(db, path):
-    dict = parsePath(path)
+@support("run_tournament")
+def run_tournament(db, data):
+    dict = get_dict_from_json_data(data)
     tour_name = dict["tournament_name"]
     tour_info = db.getTournament(name=tour_name)[0]
     run_by_tinfo(db, tour_info)
-    # create_run(db,dict["tournament_name"])
     return None
 
 
-@support("/get_run_result")
-def get_run_result(db, path):
-    dict = parsePath(path)
+@support("get_run_result")
+def get_run_result(db, data):
+    dict =get_dict_from_json_data(data)
     data = db.getRunResult(dict["tour_name"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
-@support("/get_user_tour_info")
-def get_run_result(db, path):
-    dict = parsePath(path)
+@support("get_user_tour_info")
+def get_run_result(db, data):
+    dict = get_dict_from_json_data(data)
     data = db.getUserTours(dict["user_name"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
-@support("/check_user_in_tour")
-def checkUserInTournament(db, path):
-    dict = parsePath(path)
+@support("check_user_in_tour")
+def checkUserInTournament(db, data):
+    dict =get_dict_from_json_data(data)
     data = db.checkUserInTour(dict['name'], dict['t_name'])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
-@support("/run_active_tours")
-def run_active_tours(db, path):
+@support("run_active_tours")
+def run_active_tours(db, data):
     tinfos = db.get_active_tours()
     for t in tinfos:
         print("run ", t)
@@ -239,12 +235,12 @@ def parsePath(path):
 
 def get_dict_from_json_data(json_post_data):
     # return json_post_data
-    print(json_post_data)
-    post_data = urllib.parse.parse_qs(json_post_data, keep_blank_values=1)
-    json_data = next(iter(post_data.keys()))
-    json_dict = json.loads(json_data)
-    return json_dict
-
+    # print(json_post_data)
+    # post_data = urllib.parse.parse_qs(json_post_data, keep_blank_values=1)
+    # json_data = next(iter(post_data.keys()))
+    # json_dict = json.loads(json_data)
+    # return json_dict
+    return json_post_data
 
 
 

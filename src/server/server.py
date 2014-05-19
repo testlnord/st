@@ -23,8 +23,6 @@ class Handler(BaseHTTPRequestHandler):
         return str.split('?')[0]
 
     def do_GET(self):
-
-
         key = self.get_key_from_addres(self.path)
         data = supportedHandlers[key](self.db, self.path)
         self.send_response(200)

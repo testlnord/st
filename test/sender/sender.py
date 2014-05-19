@@ -5,6 +5,10 @@ __author__ = 's'
 import urllib.parse
 import urllib.request
 import json
+import zmq
+import time
+
+
 
 class Sender:
     def  __init__(self, host, port):
@@ -122,6 +126,58 @@ class Sender:
         return response
 
 
+    def zmq_get_user_info_by_name (self,name):
+        # self.id=1
+        diction = {
+            "key" : "get_user_info",
+            "name" : name
+            }
+        return make_request(diction)
+        # jsonData = json.dumps(diction)
+        # context = zmq.Context()
+        # socket = context.socket(zmq.DEALER)
+        # identity = 'worker-%d' % self.id
+        # socket.identity = identity.encode('utf-8')
+        # socket.connect('tcp://localhost:8080')
+        # print('Client %s started' % (identity))
+        # poll = zmq.Poller()
+        # poll.register(socket, zmq.POLLIN)
+        # reqs = 0
+        # socket.send_json(jsonData)
+        # for i in range(5):
+        #         sockets = dict(poll.poll(1000))
+        #         if socket in sockets:
+        #             msg = socket.recv_json()
+        #             break
+        # socket.close()
+        # context.term()
+        # return msg[0]
+
+
+def make_request (dictionary):
+    id = int(time.time()*1000)
+    jsonData = json.dumps(dictionary)
+    context = zmq.Context()
+    socket = context.socket(zmq.DEALER)
+    identity = 'client-%d' % id
+    socket.identity = identity.encode('utf-8')
+    socket.connect('tcp://localhost:8080')
+    poll = zmq.Poller()
+    poll.register(socket, zmq.POLLIN)
+    socket.send_json(jsonData)
+    for i in range(5):
+        sockets = dict(poll.poll(1000))
+        if socket in sockets:
+          msg = socket.recv_json()
+          break
+    socket.close()
+    context.term()
+    return msg[0]
+
+
+
+
+
 
 
 if __name__ == "__main__":
@@ -135,10 +191,9 @@ if __name__ == "__main__":
     # response = s.get_tournaments()
     # response = s.is_user_in_tour("Kolyan","test")
     # response = s.get_tournaments()
-    response = s.get_run_result("T1")
+
     # response = s.getUserInfoByName("Kolyan")
-    res = s.dict(response)
-    print(res)
+    print(s.zmq_get_user_info_by_name("Kolyan"))
 
 
 

@@ -5,17 +5,18 @@ import threading
 import time
 from random import randint, random
 import db
-
+import ast
 
 from config import num_of_server_threads
 from config import serverPort
+from support import *
 
 __author__ = "s"
 
 
 def tprint(msg):
     """like print, but won't get newlines confused with multiple threads"""
-    sys.stdout.write(msg + '\n')
+    sys.stdout.write(str(msg) + '\n')
     sys.stdout.flush()
 
 class ClientTask(threading.Thread):
@@ -27,7 +28,7 @@ class ClientTask(threading.Thread):
     def run(self):
         context = zmq.Context()
         socket = context.socket(zmq.DEALER)
-        identity = u'worker-%d' % self.id
+        identity = 'worker-%d' % self.id
         socket.identity = identity.encode('utf-8')
         socket.connect('tcp://localhost:%s',serverPort)
         print('Client %s started' % (identity))
@@ -54,7 +55,7 @@ class ServerTask(threading.Thread):
     def run(self):
         context = zmq.Context()
         frontend = context.socket(zmq.ROUTER)
-        frontend.bind('tcp://*:%s',serverPort)
+        frontend.bind('tcp://*:%s'%serverPort)
 
         backend = context.socket(zmq.DEALER)
         backend.bind('inproc://backend')
@@ -88,17 +89,17 @@ class ServerWorker(threading.Thread):
     """ServerWorker"""
     def __init__(self, context):
         threading.Thread.__init__ (self)
-        self.db = db.DB()
         self.context = context
 
     def run(self):
+        self.db = db.DB()
         worker = self.context.socket(zmq.DEALER)
         worker.connect('inproc://backend')
-        tprint('Worker started')
         while True:
             ident, msg = worker.recv_multipart()
             tprint('Worker received %s from %s' % (msg, ident))
             json_dict = json.loads(msg.decode("utf-8"))
+            json_dict=ast.literal_eval(json_dict)
             data = supportedHandlers[json_dict["key"]](self.db, json_dict)
             worker.send_multipart([ident, data])
         worker.close()

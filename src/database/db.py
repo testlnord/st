@@ -13,7 +13,7 @@ class DB:
 
     def __init__(self):
         self.conn = lite.connect(os.path.join(config.db_path, config.db_name))
-        print("Database started")
+        # print("Database started")
 
     def self_test(self):
         print("self_test")
