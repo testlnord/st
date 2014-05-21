@@ -35,10 +35,18 @@ class Checker:
     def _step(self):
         res = ''
         if self.turn == 1:
-            res = self.r1.step(self.field)
+            try:
+                res = self.r1.step(self.field)
+            except:  # runner failed? runner lost!
+                self._win = 2
+                return
             turn = 2
         else:
-            res = self.r2.step(self.field)
+            try:
+                res = self.r2.step(self.field)
+            except: # see above. runner lost.
+                self._win = 1
+                return
             turn = 1
         try:
             i = int(res[0])
