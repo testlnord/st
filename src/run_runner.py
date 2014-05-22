@@ -34,13 +34,21 @@ class Run_runner:
         socket = context.socket(zmq.DEALER)
         identity = 'client-%d' % id
         socket.identity = identity.encode('utf-8')
+        socket.setsockopt(zmq.LINGER, 0)
         socket.connect('tcp://localhost:8080')
         poll = zmq.Poller()
         poll.register(socket, zmq.POLLIN)
         socket.send_json(jsonData)
         msg = None
-        msg = socket.recv_json()
+        for i in range(5):
+                sockets = dict(poll.poll(1000))
+                if socket in sockets:
+                    msg = socket.recv_json()
+                    break
+
+
         socket.close()
+        print ("no response ")
         context.term()
         if not msg:
          return {}
@@ -111,9 +119,6 @@ class Run_runner:
             "key" : "run_active_tours"
         }
         self.make_request(diction)
-         # url = 'http://'+str(config.serverHost)+':'+str(config.serverPort)+"/run_active_tours"
-         # response = urllib.request.urlopen(url)
-         # return  response
 
 def add_cron_entry():
     shabang = "#!/bin/bash"
