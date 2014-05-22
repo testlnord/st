@@ -48,7 +48,6 @@ class Run_runner:
 
 
         socket.close()
-
         context.term()
         if not msg:
          print ("no response ")
