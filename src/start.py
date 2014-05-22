@@ -1,5 +1,6 @@
 import config
 import util.register
+import util.exceptions
 import os
 import run_runner
 
