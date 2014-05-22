@@ -14,12 +14,17 @@ def make_request (dictionary):
     socket = context.socket(zmq.DEALER)
     identity = 'client-%d' % id
     socket.identity = identity.encode('utf-8')
+    socket.setsockopt(zmq.LINGER, 0)
     socket.connect('tcp://localhost:8080')
     poll = zmq.Poller()
     poll.register(socket, zmq.POLLIN)
     socket.send_json(jsonData)
     msg = None
-    msg = socket.recv_json()
+    for i in range(5):
+                sockets = dict(poll.poll(1000))
+                if socket in sockets:
+                    msg = socket.recv_json()
+                    break
     socket.close()
     context.term()
     print(msg)
