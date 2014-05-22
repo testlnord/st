@@ -23,5 +23,12 @@ run_runner.add_cron_entry()
 # with server.Server() as s:
 #     s.run(config.serverHost,config.serverPort)
 
-s = zmq_server.ServerTask();
-s.run()
+s = zmq_server.ServerTask()
+s.setDaemon(1)
+s.start()
+s.join()
+
+
+
+
+
