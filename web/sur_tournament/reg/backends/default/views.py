@@ -2,10 +2,10 @@ from django.conf import settings
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 
-from registration import signals
-from registration.models import RegistrationProfile
-from registration.views import ActivationView as BaseActivationView
-from registration.views import RegistrationView as BaseRegistrationView
+from reg import signals
+from reg.models import RegistrationProfile
+from reg.views import ActivationView as BaseActivationView
+from reg.views import RegistrationView as BaseRegistrationView
 
 
 class RegistrationView(BaseRegistrationView):

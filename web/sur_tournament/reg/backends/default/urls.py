@@ -22,8 +22,8 @@ from django.conf.urls import include
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
-from registration.backends.default.views import ActivationView
-from registration.backends.default.views import RegistrationView
+from reg.backends.default.views import ActivationView
+from reg.backends.default.views import RegistrationView
 
 
 urlpatterns = patterns('',
@@ -46,5 +46,5 @@ urlpatterns = patterns('',
                        url(r'^register/closed/$',
                            TemplateView.as_view(template_name='registration/registration_closed.html'),
                            name='registration_disallowed'),
-                       (r'', include('registration.auth_urls')),
+                       (r'', include('reg.auth_urls')),
                        )
