@@ -48,10 +48,12 @@ class Run_runner:
 
 
         socket.close()
-        print ("no response ")
+
         context.term()
         if not msg:
+         print ("no response ")
          return {}
+        print(msg)
         return msg
 
 
