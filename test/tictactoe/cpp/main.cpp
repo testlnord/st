@@ -66,8 +66,11 @@ pair<int, int> turn(const vector<char> & field, int turn){
 
 int main(){
 	//read inp field
-	vector<char> field((std::istream_iterator<char>(cin)), 
- 					   (std::istream_iterator<char>()));
+	vector<char> field(9);
+
+	for (int i = 0; i != 9; ++i){
+	    cin >> field[0];
+	}
 	
     //analyse field
 	int my_turn = whos_turn(field);
