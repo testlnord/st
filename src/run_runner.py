@@ -42,6 +42,7 @@ class Run_runner:
         msg = None
         for i in range(5):
                 sockets = dict(poll.poll(1000))
+
                 if socket in sockets:
                     msg = socket.recv_json()
                     break

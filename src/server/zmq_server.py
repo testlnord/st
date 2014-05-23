@@ -30,7 +30,7 @@ class ClientTask(threading.Thread):
         socket = context.socket(zmq.DEALER)
         identity = 'worker-%d' % self.id
         socket.identity = identity.encode('utf-8')
-        socket.connect('tcp://localhost:%s',serverPort)
+        socket.connect('tcp://127.0.0.1:%s',serverPort)
         print('Client %s started' % (identity))
         poll = zmq.Poller()
         poll.register(socket, zmq.POLLIN)
@@ -56,6 +56,7 @@ class ServerTask(threading.Thread):
         context = zmq.Context()
         frontend = context.socket(zmq.ROUTER)
         frontend.bind('tcp://*:%s'%serverPort)
+
 
         backend = context.socket(zmq.DEALER)
         backend.bind('inproc://backend')

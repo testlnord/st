@@ -8,7 +8,7 @@ path_to_srv_config = os.path.abspath(path_to_srv_config)
 
 sys.path.append(path_to_srv_config)
 
-import config
+#import config
 
-port = config.serverPort
-host = 'localhost'
+port = '8080' #config.serverPort
+host = '127.0.0.1'
