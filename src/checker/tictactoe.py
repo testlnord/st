@@ -2,13 +2,14 @@ import util.register
 from checker_interface import Checker_interface
 
 class Checker (Checker_interface):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,r1,r2):
+        super().__init__(r1,r2)
         self.field = "---------"
 
 
     figs = {1: 'x', 2: 'o'}
     def _check(self,res):
+        print("KKKKK" + str(res))
         try:
             i = int(res[0])
             j = int(res[2])
