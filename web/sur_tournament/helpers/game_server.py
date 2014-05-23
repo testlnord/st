@@ -49,7 +49,7 @@ def is_user_in_tour (name,t_name):
         "name" : name,
         "t_name" :t_name
         }
-    return make_request(msg_dict)
+    return make_request(msg_dict)[0]
 
 def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
     msg_dict = {
@@ -67,6 +67,7 @@ def getUserInfoByName (name):
         "key" : "get_user_info",
         "name" : name
     }
+
     return make_request(msg_dict)[0]
 
 def get_run_result (runid):
