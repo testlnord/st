@@ -1,8 +1,16 @@
 __author__ = 's'
+import sys
 
+from util.exceptions import TimeOutError
+
+def tprint(msg):
+    """like print, but won't get newlines confused with multiple threads"""
+    sys.stdout.write(str(msg) + '\n')
+    sys.stdout.flush()
 
 class Checker_interface:
     def __init__(self, r1, r2):
+        self.field = ""
         self.log_data = ""
         self.r1 = r1
         self.r2 = r2
@@ -10,19 +18,32 @@ class Checker_interface:
         self._win = 0
         self._pts1 = 0
         self._pts2 = 0
+        self.turn_counter = 0
 
     def play(self):
+        self.log_data += self.field
         while True:
-            self._step()
+            status = self._step()
+            self.turn_counter+=1
+            self.log_data += "\nturn " + str(self.turn_counter)
+            self.log_data += "\n" + self.field
+
             if self._win != 0:
                 if self._win == 1:
                     self._pts1 = 2
                 elif self._win == 2:
                     self._pts2 = 2
                 break
+
+        self.log_data+="\n status: "+status
         if(self._win is 0):
             self._pts1 = 1
             self._pts2 = 1
+            self.log_data+="\n tide"
+            return self._win
+
+        self.log_data+="\n player"+str(self._win)+" won"
+        tprint(self.log_data)
         return self._win
 
 
@@ -35,36 +56,33 @@ class Checker_interface:
 
     def _step(self):
         res = ''
+        self.curr_turn = self.turn
+
         if self.turn == 1:
             try:
                 res = self.r1.step(self.field)
+            except TimeOutError:
+                self._win = 2
+                return "time limit"
             except:  # runner failed? runner lost!
                 self._win = 2
-                return
-            turn = 2
+                return "runtime err"
+            self.turn = 2
         else:
             try:
                 res = self.r2.step(self.field)
+            except TimeOutError:
+                self._win = 1
+                return "time limit"
             except:  # see above. runner lost.
                 self._win = 1
-                return
-            turn = 1
-        try:
-            i = int(res[0])
-            j = int(res[2])
-        except Exception:
-            self._win = turn  #wrong output format
-            return
-        if self.field[(i) * 3 + (j)] != '-':
-            self._win = turn  #wrong move (out of rules)
-            return
-        else:
-            fld = list(self.field)
-            fld[(i) * 3 + (j)] = self.figs[self.turn]
-            self.field = ''.join(fld)
-        self.log_data += "\n" + self.field
-        self._check()
-        self.turn = turn
+                return "runtime err"
+            self.turn = 1
 
-    def _check(self):
+        return self._check(res)
+
+
+
+
+    def _check(self,res):
        pass
