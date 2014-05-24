@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS tournament
   checker varchar(100),
   id INTEGER PRIMARY KEY ,
   timelimit REAL,
-  start_time DATETIME,
-  end_time DATETIME,
+  start_time TIMESTAMP,
+  end_time TIMESTAMP,
   UNIQUE (name)
 );
 
@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS solution
   build_status INTEGER,
   runner_name VARCHAR(100),
   out_name VARCHAR(50),
-  time DATETIME,
+  time TIMESTAMP,
   FOREIGN KEY (user_id, tour_id) REFERENCES participants(user_id, tour_id)
 );
 CREATE TABLE IF NOT EXISTS run
 (
   id INTEGER PRIMARY KEY ,
   tour_id INTEGER,
-  timestart DATETIME,
+  timestart TIMESTAMP,
   FOREIGN KEY (tour_id) REFERENCES tournament(id)
 );
 CREATE TABLE IF NOT EXISTS game

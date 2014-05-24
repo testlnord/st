@@ -28,6 +28,13 @@ def support(key):
     return adder
 
 
+def date2db(date):
+    a = date.strftime("%Y-%m-%d %H:%M:%S.000000")
+    print(a)
+    return a
+
+
+
 def make_out_path(tour_id, user_id):
     tour_path = os.path.join(config.out_path, str(tour_id))
     res_path = os.path.join(tour_path, str(user_id))
@@ -161,7 +168,7 @@ def run_active_tours(db, data):
 def run_by_tinfo(db, tinfo):
     tid = tinfo["id"]
     timelimit = tinfo["tl"]
-    run_id = db.addRun(tid, str(datetime.datetime.now()))
+    run_id = db.addRun(tid, date2db(datetime.datetime.now()))
     solutions = db.getSolutionsInTournament(tid)
 
     for sol1_num, sol1 in enumerate(solutions[:-1]):
@@ -187,7 +194,7 @@ def create_run(db, tour_name):
     tour_info = db.getTournament(name=tour_name)[0]
     tour_id = tour_info["id"]
 
-    run_id = db.addRun(tour_id, str(datetime.datetime.now()))
+    run_id = db.addRun(tour_id, date2db(datetime.datetime.now()))
     solutions = db.getSolutionsInTournament(tour_id)
 
     for sol1_num, sol1 in enumerate(solutions[:-1]):
@@ -221,7 +228,7 @@ def addBuild(db, user_name, tour_name, file, builder_name):
         result["msg"] = str(e)
 
     #print(builder)
-    db.addSolution(user_info["id"], tour_info["id"], b_stat, str(datetime.datetime.now()), builder_name, o_file)
+    db.addSolution(user_info["id"], tour_info["id"], b_stat, date2db(datetime.datetime.now()), builder_name, o_file)
     return result
 
 

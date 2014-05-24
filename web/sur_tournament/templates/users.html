@@ -66,8 +66,8 @@
                         {% if tour.pts  %}
                             Score: {{ tour.pts }}<br>
                         {% endif %}
-                        Start date: {{ tour.start_time }}<br>
-                        End date: {{ tour.end_time }}<br>
+                        Start date: {{ tour.start_time|date:"d N Y"  }}<br>
+                        End date: {{ tour.end_time|date:"d N Y"  }}<br>
                         {% if tour.runs %}
                             Results: <br>
                             <div style="background-color: #FFFFFF; border-color: #DDDDDD;  border-radius: 4px 4px 4px 4px;

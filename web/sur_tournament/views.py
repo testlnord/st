@@ -75,9 +75,12 @@ def tour(request, id = None, template_name='tour.html', s={}):
 
 def users(request, name = None, template_name = 'users.html'):
     if name is None:
-        return HttpResponseRedirect('/add_tour/') # Redirect after none ID
+        return HttpResponseRedirect('/') # Redirect after none name
 
     all_user_info = game_server.getUserInfoByName(name)
+    if all_user_info is None:
+        return HttpResponseRedirect('/') # Redirect after bad user ID
+
     verbose = False
     if request.user.is_authenticated() and request.user.username == all_user_info["name"]:
         verbose = True
@@ -90,6 +93,8 @@ def users(request, name = None, template_name = 'users.html'):
     cur_tours = []
     if verbose:
         tour_info = game_server.get_user_tour_info(all_user_info["name"])
+        if tour_info is None:
+            tour_info = []
         for info in tour_info:
             if time.strptime(info["end_time"], "%Y-%m-%d %H:%M:%S 00:00") < time.localtime():
                 old_tours.append(info)

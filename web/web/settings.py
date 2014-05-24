@@ -36,6 +36,7 @@ TEMPLATE_DIRS = (
 # Application definition
 
 INSTALLED_APPS = (
+    'sur_tournament',
     'django.contrib.admin',
     'django.contrib.auth',
    # 'django.contrib.sites',
@@ -45,7 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'sur_tournament',
+
 )
 
 
@@ -95,6 +96,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+#datetime format
+DATE_FORMAT = 'j N Y'
 
 
 # Static files (CSS, JavaScript, Images)

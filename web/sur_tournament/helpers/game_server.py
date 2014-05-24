@@ -1,6 +1,7 @@
 import json
 import stserver_config
 import urllib
+import datetime
 from django.utils.http import urlquote
 import time
 import zmq
@@ -28,10 +29,23 @@ def make_request (dictionary):
     socket.close()
     context.term()
     print(msg)
-    if not msg:
-        return {}
+    if msg:
+        for mes in msg:
+            if isinstance(mes, dict):
+                for k in mes:
+                    try:
+                        mes[k] = str2date(mes[k])
+                    except (ValueError, TypeError):
+                        pass # if it's not a string then ok
+    print(msg)
     return msg
 
+
+def date2db(date):
+    return date.strftime("%Y-%m-%d %H:%M:%S.000000")
+
+def str2date(str):
+    return datetime.datetime.strptime(str, "%Y-%m-%d %H:%M:%S.000000")
 
 
 def addUser ( name, email):
@@ -43,32 +57,44 @@ def addUser ( name, email):
     return make_request(msg_dict)
 
 
-def is_user_in_tour (name,t_name):
+def is_user_in_tour(name,t_name):
     msg_dict = {
-        "key" : "check_user_in_tour",
-        "name" : name,
-        "t_name" :t_name
+        "key": "check_user_in_tour",
+        "name": name,
+        "t_name": t_name
         }
-    return make_request(msg_dict)[0]
+    res = make_request(msg_dict)
+    if res:
+        return res[0]
+    return None
 
-def sendCreateTournament ( name, checker, timelimit, start_time, end_time):
+
+def sendCreateTournament (name, checker, timelimit, start_time, end_time):
     msg_dict = {
-        "key" : "create_tournament",
-        "name" : name,
-        "checker" : str(checker),
+        "key": "create_tournament",
+        "name": name,
+        "checker": (checker),
         "timelimit":str(timelimit),
-        "start_time" : str(start_time),
-        "end_time" : str(end_time)
+        "start_time": date2db(start_time),
+        "end_time": date2db(end_time)
         }
+    print("-----------------------")
+    print(end_time.strftime("%Y-%m-%d %H:%M:%S 00:00"))
+    print(str(type(start_time)))
     return make_request(msg_dict)
 
-def getUserInfoByName (name):
+
+def getUserInfoByName(name):
     msg_dict = {
-        "key" : "get_user_info",
-        "name" : name
+        "key": "get_user_info",
+        "name": name
     }
 
-    return make_request(msg_dict)[0]
+    res = make_request(msg_dict)
+    if res:
+        return res[0]
+    return None
+
 
 def get_run_result (runid):
     msg_dict = {

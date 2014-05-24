@@ -6,16 +6,16 @@
   <h3>{{ tour.name }}</h3>
     <ul>
         <li>
-            Start Time: {{ tour.start_time }}
+            Start Time: {{ tour.start_time|date:"d N Y" }}
         </li>
         <li>
-            End Time: {{ tour.end_time }}
+            End Time: {{ tour.end_time|date:"d N Y"  }}
         </li>
         <li>
-            Time limits: {{ tour.timelimit }}
+            Time limits: {{ tour.tl }}
         </li>
         <li>
-            Game: {{ tour.checker }}
+            Game: {{ tour.c }}
         </li>
     </ul>
 

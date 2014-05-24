@@ -12,7 +12,7 @@ class DB:
     tables = ["user", "tournament", ""]
 
     def __init__(self):
-        self.conn = lite.connect(os.path.join(config.db_path, config.db_name))
+        self.conn = lite.connect(os.path.join(config.db_path, config.db_name), detect_types=lite.PARSE_DECLTYPES)
         # print("Database started")
 
     def self_test(self):
@@ -33,6 +33,10 @@ class DB:
         self.addSolution(1, 1, 0, "21321", "cpp", "a.out")
         print("get sol")
         self.getSolutionsInTournament(1)
+
+    @staticmethod
+    def date2str(date):
+        return date.strftime("%Y-%m-%d %H:%M:%S.000000")
 
     def addUser(self, name, email):
         cur = self.conn.cursor()
@@ -88,9 +92,11 @@ class DB:
             result.append({"name": t_name,
                            "c": t_checker,
                            "tl": t_timelimit,
-                           "start_time": t_s_time,
-                           "end_time": t_e_time,
+                           "start_time": self.date2str(t_s_time),
+                           "end_time": self.date2str(t_e_time),
                            "id": t_id})
+            print(t_s_time)
+            print(str(type(t_s_time)))
         return result
 
     def addParticipant(self, tour_id, user_id):
@@ -138,7 +144,7 @@ class DB:
             result.append({"user_id": user_id,
                            "tour_id": t_id,
                            "build_status": b_status,
-                           "time": time,
+                           "time": self.date2str(time),
                            "id": id,
                            "runner_name": runner,
                            "file_name": file_name})
