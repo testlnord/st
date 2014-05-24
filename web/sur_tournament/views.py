@@ -1,3 +1,4 @@
+import datetime
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 
@@ -96,7 +97,7 @@ def users(request, name = None, template_name = 'users.html'):
         if tour_info is None:
             tour_info = []
         for info in tour_info:
-            if time.strptime(info["end_time"], "%Y-%m-%d %H:%M:%S 00:00") < time.localtime():
+            if info["end_time"] < datetime.datetime.now():
                 old_tours.append(info)
             else:
                 cur_tours.append(info)
@@ -128,3 +129,4 @@ def add_tour(request, template_name='a_tour.html'):
 
 def contact(request, template_name='contact.html'):
     return render(request, template_name)
+

@@ -144,7 +144,7 @@ class DB:
             result.append({"user_id": user_id,
                            "tour_id": t_id,
                            "build_status": b_status,
-                           "time": self.date2str(time),
+                           "time": time,
                            "id": id,
                            "runner_name": runner,
                            "file_name": file_name})
@@ -232,7 +232,7 @@ class DB:
 
         for (name, checker, st, et, id)  in tours_res:
             tour_info = {"id": id, "name": name, "checker": checker,
-                         "start_time":st, "end_time":et}
+                         "start_time":self.date2str(st), "end_time":self.date2str(et)}
 
             run_cur = self.conn.cursor()
             run_id = run_cur.execute("SELECT id FROM run"
