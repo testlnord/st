@@ -129,16 +129,6 @@ def run_tournament (t_name):
     }
     return make_request(msg_dict)
 
-
-#def dict (response):
-#    return response
-
-#def dict_list (response):
-#    json_data= response.read().decode('utf-8')
-#    json_data=json.loads(json_data)
-#    return json_data
-
-
 def add_user_to_tour (name,t_name):
     msg_dict = {
         "key" : "add_participant",

@@ -20,6 +20,9 @@ class Checker_interface:
         self._pts2 = 0
         self.turn_counter = 0
 
+    def _gameover(self):
+        return False
+
     def play(self):
         while True:
             status = self._step()
@@ -31,6 +34,9 @@ class Checker_interface:
                 elif self._win == 2:
                     self._pts2 = 2
                 break
+            if self._game_over():
+                break
+
 
         self.log_data += self.log_entry(status=status)
         if(self._win is 0):

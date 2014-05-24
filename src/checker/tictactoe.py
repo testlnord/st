@@ -6,6 +6,9 @@ class Checker (Checker_interface):
         super().__init__(r1,r2)
         self.field = "---------"
 
+    def _gameover(self):
+        return ("-" not in self.field)
+
     def get_field(self):
         result = "<table class=\"table-bordered game-field-table\">"
         for i in range(3):
