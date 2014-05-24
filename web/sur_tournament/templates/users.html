@@ -72,12 +72,28 @@
                             Results: <br>
                             <div class="scroll-box span6">
                             {% for r in tour.runs %}
-                                YOU {{ r.3 }} - {{ r.4 }} <a href="/users/{{ r.2 }}">{{ r.2 }}</a>
-                                <button name="log" data-gameid="{{r.1}}" class="btn btn-info btn-mini" type="button">View log</button>
-                                <br/>
+                                {% ifchanged r.0 %}
+                                    <div class="line-separator"></div>
+                                {% endifchanged %}
+                                <div class="score-span" style="margin-left:0px !important; ">
+                                    <span class="score">
+                                        {% if r.2 == user_info.name %}
+                                            {{ r.2 }}
+                                        {% else %}
+                                             <a href="/users/{{ r.2 }}">{{ r.2 }}</a>
+                                        {% endif %}
+                                        {{ r.4 }} - {{ r.5 }}
+                                        {% if r.3 == user_info.name %}
+                                            {{ r.3 }}
+                                        {% else %}
+                                             <a href="/users/{{ r.3 }}">{{ r.3 }}</a>
+                                        {% endif %}
+                                    </span>
+                                    <button name="log" data-gameid="{{r.1}}" class="btn btn-info btn-mini log-btn" type="button">View log</button>
+                                </div>
                             {% endfor %}
                             </div>
-                            <div id="game_log" class="span5">
+                            <div id="game_log" class="span5 scroll-box" style="display: none">
 
                             </div>
                         {% endif %}

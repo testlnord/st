@@ -6,10 +6,29 @@ class Checker (Checker_interface):
         super().__init__(r1,r2)
         self.field = "---------"
 
+    def get_field(self):
+        result = "<table class=\"table-bordered game-field-table\">"
+        for i in range(3):
+            result += "<tr class=\"game-field-row\">"
+            for j in range(3):
+                result += "<td class=\"game-field-cell\">"+self.field[i*3+j]+"</td>"
+            result += "</tr>"
+        result += "</table><br/>"
+        return result
+
+    def log_entry(self, status=None, result=None):
+        if status is not None:
+            return "status: "+status +"<br/>"
+        if result is not None:
+            if result == "tide":
+                return "tide<br/>"
+            else:
+                return "<b> player"+str(self._win)+" won</b><br/>"
+        return "turn " + str(self.turn_counter)+"<br/>" + self.get_field()
+
 
     figs = {1: 'x', 2: 'o'}
     def _check(self,res):
-        print("KKKKK" + str(res))
         try:
             i = int(res[0])
             j = int(res[2])

@@ -262,22 +262,15 @@ class DB:
                 if pts:
                     tour_info["pts"] = next(pts)[0]
                     pts_cur = self.conn.cursor()
-                    runs = pts_cur.execute("select run.id, game.id, enemy, points1, points2 from run "
+                    runs = pts_cur.execute("select run.id, game.id, user1.name, user2.name, points1, points2 from run "
                                            "inner join game on game.run = run.id "
-                                           "inner join solution as s on s.id = game.solution1 "
-                                           "inner join (select user.name as enemy, solution.id as enemid "
-                                           "from user inner join "
-                                           "solution on user_id = user.id ) on enemid = solution2 "
-                                           "where s.user_id = ? and run.tour_id = ? "
-                                           "UNION ALL "
-                                           "select run.id, game.id, enemy, points2, points1 from run "
-                                           "inner join game on game.run = run.id "
-                                           "inner join solution as s on s.id = game.solution2 "
-                                           "inner join (select user.name as enemy, solution.id as enemid "
-                                           "from user inner join "
-                                           "solution on user_id = user.id ) on enemid = solution1 "
-                                           "where s.user_id = ? and run.tour_id = ? ",
-                                           (user_info["id"], id, user_info["id"], id))
+                                           "inner join solution as s1 on s1.id = game.solution1 "
+                                           "inner join solution as s2 on s2.id = game.solution2 "
+                                           "inner join user as user1 on user1.id = s1.user_id "
+                                           "inner join user as user2 on user2.id = s2.user_id "
+                                           "where (s1.user_id = ? or s2.user_id = ?) and run.tour_id = ? "
+                                           "order by run.id DESC, game.id ",
+                                           (user_info["id"], user_info["id"], id))
                     tour_info["runs"] = []
                     for r in runs:
                         tour_info["runs"].append(r)

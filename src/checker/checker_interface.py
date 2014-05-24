@@ -21,13 +21,10 @@ class Checker_interface:
         self.turn_counter = 0
 
     def play(self):
-        self.log_data += self.field
         while True:
             status = self._step()
-            self.turn_counter+=1
-            self.log_data += "\nturn " + str(self.turn_counter)
-            self.log_data += "\n" + self.field
-
+            self.turn_counter += 1
+            self.log_data += self.log_entry()
             if self._win != 0:
                 if self._win == 1:
                     self._pts1 = 2
@@ -35,17 +32,28 @@ class Checker_interface:
                     self._pts2 = 2
                 break
 
-        self.log_data+="\n status: "+status
+        self.log_data += self.log_entry(status=status)
         if(self._win is 0):
             self._pts1 = 1
             self._pts2 = 1
-            self.log_data+="\n tide"
+            self.log_data += self.log_entry(result="tide")
             return self._win
-
-        self.log_data+="\n player"+str(self._win)+" won"
+        self.log_data += self.log_entry(result="win")
         tprint(self.log_data)
         return self._win
 
+    def log_entry(self, status=None, result=None):
+        if status is not None:
+            return "\n status: "+status
+        if result is not None:
+            if result == "tide":
+                return "tide"
+            else:
+                return "\n player"+str(self._win)+" won"
+        return "\nturn " + str(self.turn_counter)+"\n" + self.get_field()
+
+    def get_field(self):
+        return self.field
 
     def log(self):
         return self.log_data
