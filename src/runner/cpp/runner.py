@@ -19,6 +19,8 @@ class Runner:
             (o, e) = self.proc.communicate(bytes(arg, "UTF8"))
             res.append(o)
             res.append(e)
+            print("run sucessfull result = "+str(res[1]))
+
 
         res = []
         thread = threading.Thread(target=target, args = (res,))
@@ -30,6 +32,10 @@ class Runner:
             thread.join()
             raise util.exceptions.TimeOutError(self.timeout)
 
+        print(res)
+
+        if not res[0]:
+            raise util.exceptions.RunError
 
         return res[0].decode("UTF8")
 
