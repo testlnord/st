@@ -19,14 +19,15 @@ div.scroll-box table{
 
 
 .line-separator{
-    height:1px;
-    background:#717171;
-    border-bottom:1px solid #313030;
-    min-height: 1px;
+margin: 0 0 15px 0;
+border-bottom:1px solid #cccccc;
+padding: 4px 0px 0;
 }
 
 .score-span{
     margin-top: 2px;
+    margin-left: 0px !important;
+    text-align: center;
 }
 
 .score{

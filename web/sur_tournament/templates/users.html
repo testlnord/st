@@ -73,9 +73,18 @@
                             <div class="scroll-box span6">
                             {% for r in tour.runs %}
                                 {% ifchanged r.0 %}
-                                    <div class="line-separator"></div>
+                                    {% if not forloop.first %}
+                                    {% if forloop.first %}
+                                        <div> <!-- added it just for tag parity -->
+                                    {% endif %}
+                                    </div>
+                                    {% endif %}
+                                    {% if not forloop.last %}
+                                    <div class="line-separator" style="float: none;">Run number {{ r.0 }}
+                                    {% endif %}
                                 {% endifchanged %}
-                                <div class="score-span" style="margin-left:0px !important; ">
+
+                                <div class="score-span">
                                     <span class="score">
                                         {% if r.2 == user_info.name %}
                                             {{ r.2 }}
@@ -89,13 +98,17 @@
                                              <a href="/users/{{ r.3 }}">{{ r.3 }}</a>
                                         {% endif %}
                                     </span>
-                                    <button name="log" data-gameid="{{r.1}}" class="btn btn-info btn-mini log-btn" type="button">View log</button>
+                                    <button name="log" data-torid="{{ tour.id }}" data-gameid="{{r.1}}" class="btn btn-info btn-mini log-btn" type="button">View log</button>
                                 </div>
+                                {% if forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                             </div>
-                            <div id="game_log" class="span5 scroll-box" style="display: none">
+                            <div id="game_log{{ tour.id }}" class="span5 scroll-box" style="display: none">
 
                             </div>
+
                         {% endif %}
                     </div>
 

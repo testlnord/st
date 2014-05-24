@@ -92,15 +92,27 @@ def users(request, name = None, template_name = 'users.html'):
     tour_info = None
     old_tours = []
     cur_tours = []
-    if verbose:
-        tour_info = game_server.get_user_tour_info(all_user_info["name"])
-        if tour_info is None:
-            tour_info = []
-        for info in tour_info:
-            if info["end_time"] < datetime.datetime.now():
-                old_tours.append(info)
-            else:
-                cur_tours.append(info)
+    tour_info = game_server.get_user_tour_info(all_user_info["name"])
+
+    if tour_info is None:
+        tour_info = []
+    for info in tour_info:
+        if "runs" in info.keys():
+            prev = None
+            run_number = 0
+            for r in info["runs"]:
+                if prev is None or prev != r[0]:
+                    prev = r[0]
+                    run_number += 1
+
+                r[0] = run_number
+            for r in info["runs"]:
+                r[0] = run_number + 1 - r[0]
+
+        if info["end_time"] < datetime.datetime.now():
+            old_tours.append(info)
+        else:
+            cur_tours.append(info)
 
 
     return render(request, template_name, {'user_info': user_info, 'old_tour_info': old_tours, 'tour_info': cur_tours})
