@@ -69,6 +69,17 @@ def is_user_in_tour(name,t_name):
     return None
 
 
+def get_game_log(game_id):
+    msg_dict = {
+        "key": "get_game_log",
+        "game_id": game_id
+        }
+    res = make_request(msg_dict)
+    if res:
+        return res[0]
+    return ''
+
+
 def sendCreateTournament (name, checker, timelimit, start_time, end_time):
     msg_dict = {
         "key": "create_tournament",

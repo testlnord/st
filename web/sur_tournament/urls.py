@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url('tour/(?P<id>\d*)/$', tour),
     url('users/(.*)/$', users),
     url('contact/$', contact),
+    url('game_log/$', get_game_log, name='get_game_log'),
 )

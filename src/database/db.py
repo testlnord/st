@@ -125,6 +125,19 @@ class DB:
 
         return result
 
+    def getGameLog(self, game_id):
+        cur = self.conn.cursor()
+        res = cur.execute("SELECT log FROM game where id = ?",
+                          (game_id,))
+
+        try:
+            result = next(res)
+        except StopIteration:
+            result = ''
+
+        return result
+
+
     def addSolution(self, user_id, tour_id, build_status, time, runner, file_name):
         cur = self.conn.cursor()
         cur.execute("INSERT INTO solution(user_id, tour_id, build_status, time, runner_name, out_name) " +
@@ -132,6 +145,8 @@ class DB:
                     (user_id, tour_id, build_status, time, runner, file_name))
         self.conn.commit()
         return cur.lastrowid
+
+
 
     def getSolutionsInTournament(self, tour_id):
         cur = self.conn.cursor()

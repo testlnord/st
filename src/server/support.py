@@ -151,8 +151,16 @@ def get_run_result(db, data):
 
 @support("check_user_in_tour")
 def checkUserInTournament(db, data):
-    dict =get_dict_from_json_data(data)
-    data = db.checkUserInTour(dict['name'], dict['t_name'])
+    req_dict =get_dict_from_json_data(data)
+    data = db.checkUserInTour(req_dict['name'], req_dict['t_name'])
+    jsonData = json.dumps(data)
+    return jsonData.encode("utf-8")
+
+
+@support("get_game_log")
+def getGameLog(db, data):
+    req_dict = get_dict_from_json_data(data)
+    data = db.getGameLog(req_dict['game_id'])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 

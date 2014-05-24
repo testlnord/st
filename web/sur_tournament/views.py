@@ -105,6 +105,16 @@ def users(request, name = None, template_name = 'users.html'):
 
     return render(request, template_name, {'user_info': user_info, 'old_tour_info': old_tours, 'tour_info': cur_tours})
 
+
+def get_game_log(request):
+    game_log = ''
+    if request.method == 'GET':
+        game_id = request.GET['gamid']
+        game_log = game_server.get_game_log(game_id)
+
+    return HttpResponse(game_log)
+
+
 def add_tour(request, template_name='a_tour.html'):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/') # Redirect if not auth
