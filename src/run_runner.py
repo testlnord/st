@@ -67,7 +67,6 @@ class Run_runner:
         s1["user_id"], s1["runner_name"], s1["file_name"] = game[4 - 6]
         s2 = dict()
         s2["user_id"], s2["runner_name"], s2["file_name"] = game[7 - 9]
-
         s1["tour_id"]=tour_id
         s2["tour_id"]=tour_id
 

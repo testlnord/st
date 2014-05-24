@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS solution
   build_status INTEGER,
   runner_name VARCHAR(100),
   out_name VARCHAR(50),
-  time TIMESTAMP,
+  time VARCHAR(16),
   FOREIGN KEY (user_id, tour_id) REFERENCES participants(user_id, tour_id)
 );
 CREATE TABLE IF NOT EXISTS run

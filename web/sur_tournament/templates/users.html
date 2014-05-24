@@ -93,7 +93,7 @@
     </div>
     {% else %}
        <p style="text-align: center">
-       {% if user_info.name == request.user %}
+       {% if user_info.email %}
       You haven't participated in any tournaments yet. Visit <a href="/">main page</a> and choose one.
        {% endif %}
        </p>

@@ -35,18 +35,21 @@ def date2db(date):
 
 
 
-def make_out_path(tour_id, user_id):
+def make_out_path(tour_id, user_id, time_salt=None):
     tour_path = os.path.join(config.out_path, str(tour_id))
     res_path = os.path.join(tour_path, str(user_id))
     #adding send time mark
-    res_path = os.path.join(res_path, str(time.time()))
+    if time_salt is None:
+        time_salt = str(time.time())
+    res_path = os.path.join(res_path, time_salt)
     return res_path
 
 
 def make_runner(sollution, timelimit):
     r = util.register.runners[sollution["runner_name"]](
-        os.path.join(make_out_path(sollution["tour_id"], sollution["user_id"]), sollution["file_name"]),
+        os.path.join(make_out_path(sollution["tour_id"], sollution["user_id"],sollution["time"]), sollution["file_name"]),
         timelimit)
+
     return r
 
 
@@ -212,10 +215,10 @@ def create_run(db, tour_name):
 
 def addBuild(db, user_name, tour_name, file, builder_name):
     result = {"ok": True, "msg": ''}
-
+    cur_time = time.time()
     user_info = db.getUser(name=user_name)[0]
     tour_info = db.getTournament(name=tour_name)[0]
-    o_path = make_out_path(tour_info["id"], user_info["id"])
+    o_path = make_out_path(tour_info["id"], user_info["id"], str(cur_time))
     os.makedirs(o_path)
     print(o_path)
     builder = util.register.builders[builder_name]
@@ -236,7 +239,7 @@ def addBuild(db, user_name, tour_name, file, builder_name):
         result["msg"] = str(e)
 
     #print(builder)
-    db.addSolution(user_info["id"], tour_info["id"], b_stat, date2db(datetime.datetime.now()), builder_name, o_file)
+    db.addSolution(user_info["id"], tour_info["id"], b_stat, str(cur_time), builder_name, o_file)
     return result
 
 
