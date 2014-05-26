@@ -20,6 +20,7 @@ class Checker (Checker_interface):
         return result
 
     def log_entry(self, status=None, result=None):
+
         if status is not None:
             return "status: "+status +"<br/>"
         if result is not None:
@@ -32,6 +33,7 @@ class Checker (Checker_interface):
 
     figs = {1: 'x', 2: 'o'}
     def _check(self,res):
+
         try:
             i = int(res[0])
             j = int(res[2])
@@ -40,7 +42,7 @@ class Checker (Checker_interface):
             return "wrong output"
         if self.field[(i) * 3 + (j)] != '-':
             self._win = self.turn  #wrong move (out of rules)
-            return "wrong move"
+            return "wrong move ("+str(res) + ")"
         else:
             fld = list(self.field)
             fld[(i) * 3 + (j)] = self.figs[self.curr_turn]

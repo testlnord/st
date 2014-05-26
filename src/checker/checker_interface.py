@@ -34,7 +34,7 @@ class Checker_interface:
                 elif self._win == 2:
                     self._pts2 = 2
                 break
-            if self._game_over():
+            if self._gameover():
                 break
 
 
@@ -45,11 +45,11 @@ class Checker_interface:
             self.log_data += self.log_entry(result="tide")
             return self._win
         self.log_data += self.log_entry(result="win")
-        tprint(self.log_data)
         return self._win
 
     def log_entry(self, status=None, result=None):
         if status is not None:
+            print("status: "+status)
             return "\n status: "+status
         if result is not None:
             if result == "tide":
