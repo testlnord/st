@@ -55,7 +55,6 @@ def make_runner(sollution, timelimit):
 #DECORATORS
 @support("add_user")
 def addUser(db, data):
-    data = get_dict_from_json_data(data)
     name = data["name"]
     email = data["email"]
 
@@ -66,12 +65,11 @@ def addUser(db, data):
 
 @support("get_user_info")
 def getUserInfo(db, data):
-    dict = get_dict_from_json_data(data)
 
-    if "id" in dict:
-        data = db.getUser(dict["id"])
+    if "id" in data:
+        data = db.getUser(data["id"])
     else:
-        data = db.getUser(None, dict["name"])
+        data = db.getUser(None, data["name"])
     return jsonify(data)
 
 
@@ -109,7 +107,6 @@ def addTournament(db, data):
 
 @support("add_participant")
 def add_participant(db, data):
-    data = get_dict_from_json_data(data)
     if not data:
         return
     name = data["name"]
@@ -128,8 +125,7 @@ def add_solution(db, dict):
 
 @support("run_tournament")
 def run_tournament(db, data):
-    dict = get_dict_from_json_data(data)
-    tour_name = dict["tournament_name"]
+    tour_name = data["tournament_name"]
     tour_info = db.getTournament(name=tour_name)[0]
     run_by_tinfo(db, tour_info)
     return None
@@ -137,32 +133,28 @@ def run_tournament(db, data):
 
 @support("get_run_result")
 def get_run_result(db, data):
-    dict =get_dict_from_json_data(data)
-    data = db.getRunResult(dict["tour_name"])
+    data = db.getRunResult(data["tour_name"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
 @support("get_user_tour_info")
 def get_run_result(db, data):
-    dict = get_dict_from_json_data(data)
-    data = db.getUserTours(dict["user_name"])
+    data = db.getUserTours(data["user_name"])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
 @support("check_user_in_tour")
 def checkUserInTournament(db, data):
-    req_dict =get_dict_from_json_data(data)
-    data = db.checkUserInTour(req_dict['name'], req_dict['t_name'])
+    data = db.checkUserInTour(data['name'], data['t_name'])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
 
 @support("get_game_log")
 def getGameLog(db, data):
-    req_dict = get_dict_from_json_data(data)
-    data = db.getGameLog(req_dict['game_id'])
+    data = db.getGameLog(data['game_id'])
     jsonData = json.dumps(data)
     return jsonData.encode("utf-8")
 
