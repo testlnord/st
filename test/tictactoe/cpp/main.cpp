@@ -69,7 +69,7 @@ int main(){
 	vector<char> field(9);
 
 	for (int i = 0; i != 9; ++i){
-	    cin >> field[0];
+	    cin >> field[i];
 	}
 	
     //analyse field

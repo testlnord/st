@@ -63,14 +63,14 @@
                         </h5>
                     </div>
                     <div id="curTours{{ tour.id }}" class="panel-collapse collapse">
-                        {% if tour.pts  %}
+                        {% if tour.pts or tour.pts == 0  %}
                             Score: {{ tour.pts }}<br>
                         {% endif %}
                         Start date: {{ tour.start_time|date:"d N Y"  }}<br>
                         End date: {{ tour.end_time|date:"d N Y"  }}<br>
                         {% if tour.runs %}
                             Results: <br>
-                            <div class="scroll-box span6">
+                            <div class="scroll-box span6 ">
                             {% for r in tour.runs %}
                                 {% ifchanged r.0 %}
                                     {% if not forloop.first %}

@@ -150,9 +150,9 @@ class DB:
 
     def getSolutionsInTournament(self, tour_id):
         cur = self.conn.cursor()
-        res = cur.execute("SELECT user_id, tour_id, build_status, max(time), id, runner_name, out_name from solution " +
+        res = cur.execute("SELECT user_id, tour_id, build_status, max(time), max(id), runner_name, out_name from solution " +
                           "where tour_id = ? and build_status = 0 " +
-                          "group by tour_id, user_id, id, build_status, runner_name, out_name",
+                          "group by tour_id, user_id, build_status, runner_name, out_name",
                           (tour_id,))
         result = []
         for (user_id, t_id, b_status, time, id, runner, file_name) in res:
@@ -254,11 +254,21 @@ class DB:
                              " WHERE run.tour_id= ?"
                              " ORDER BY run.timestart DESC", (id, ))
             if run_id:
-                tour_info["run_id"] = next(run_id)[0]
+                try:
+                    tour_info["run_id"] = next(run_id)[0]
+                except StopIteration:
+                    pass #just ignore. No runs is OK.
+            if "run_id" in tour_info:
                 pts_cur = self.conn.cursor()
-                pts = pts_cur.execute("Select sum(points1) + sum(points2) from game inner join "
-                                      " solution as s on s.id = game.solution1 or s.id = game.solution2 "
-                                      " where game.run = ? and s.user_id = ?", (tour_info["run_id"], user_info["id"]))
+                pts = pts_cur.execute(" select sum(pts) from "
+                                      " (Select game.points1 as pts from solution as s inner join "
+                                      " game on s.id = game.solution1 "
+                                      " where game.run = ? and s.user_id = ? "
+                                      "UNION ALL "
+                                      " select game.points2 as pts from solution as s inner join "
+                                      " game on s.id = game.solution2 "
+                                      " where game.run = ? and s.user_id = ? )", (tour_info["run_id"], user_info["id"],
+                                                                                  tour_info["run_id"], user_info["id"]))
                 if pts:
                     tour_info["pts"] = next(pts)[0]
                     pts_cur = self.conn.cursor()
