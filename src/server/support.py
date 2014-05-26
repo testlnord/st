@@ -30,7 +30,6 @@ def support(key):
 
 def date2db(date):
     a = date.strftime("%Y-%m-%d %H:%M:%S.000000")
-    print(a)
     return a
 
 
@@ -220,7 +219,6 @@ def addBuild(db, user_name, tour_name, file, builder_name):
     tour_info = db.getTournament(name=tour_name)[0]
     o_path = make_out_path(tour_info["id"], user_info["id"], str(cur_time))
     os.makedirs(o_path)
-    print(o_path)
     builder = util.register.builders[builder_name]
     src_path = os.path.join(o_path, builder.def_src_name)
 
@@ -238,7 +236,6 @@ def addBuild(db, user_name, tour_name, file, builder_name):
         result["ok"] = False
         result["msg"] = str(e)
 
-    #print(builder)
     db.addSolution(user_info["id"], tour_info["id"], b_stat, str(cur_time), builder_name, o_file)
     return result
 

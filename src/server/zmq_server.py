@@ -15,9 +15,10 @@ __author__ = "s"
 
 
 def tprint(msg):
+    pass
     """like print, but won't get newlines confused with multiple threads"""
-    sys.stdout.write(str(msg) + '\n')
-    sys.stdout.flush()
+    # sys.stdout.write(str(msg) + '\n')
+    # sys.stdout.flush()
 
 class ClientTask(threading.Thread):
     """ClientTask"""
